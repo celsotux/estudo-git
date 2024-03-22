@@ -1,0 +1,166 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "ECS Cluster Template",
+    "Parameters": {
+        "Environment": {
+            "Type": "String",
+            "Description": "Choose the type of environment",
+            "AllowedValues": [
+                "dev"
+            ]
+        },
+        "ClusterName": {
+            "Type": "String",
+            "Description": "A user-generated string that you use to identify your cluster. Do not use environment and domain prefix in the name, these will be included automatically.",
+            "Default": "cluster",
+            "MinLength": 2,
+            "MaxLength": 96
+        },
+        "ContainerInsights": {
+            "Type": "String",
+            "Description": "CloudWatch Container Insights will be enabled for the cluster, otherwise it will be disabled unless the containerInsights account setting is enabled",
+            "AllowedValues": [
+                "enabled",
+                "disabled"
+            ],
+            "Default": "disabled"
+        }
+    },
+    "Metadata": {
+        "AWS::CloudFormation::Interface": {
+            "ParameterGroups": [
+                {
+                    "Label": {
+                        "default": "ECS Cluster Configuration"
+                    },
+                    "Parameters": [
+                        "ClusterName",
+                        "Environment",
+                        "ContainerInsights"
+                    ]
+                }
+            ],
+            "ParameterLabels": {
+                "ClusterName": {
+                    "default": "Cluster name"
+                },
+                "Environment": {
+                    "default": "Environment Type"
+                },
+                "ContainerInsights": {
+                    "default": "Container Insights"
+                }
+            }
+        }
+    },
+    "Mappings": {
+        "EnvironmentMap": {
+            "dev": {
+                "Prefix": "dev"
+            }
+        },
+        "DomainMap": {
+            "celsotux": {
+                "Prefix": "celsotux",
+                "AccountId": "033795200546"
+            }
+        },
+        "AccountMap": {
+            "033795200546": {
+                "Prefix": "celsotux",
+                "Name": "celso-tux"
+            }
+        }
+    },
+    "Resources": {
+        "ECSCluster": {
+            "Type": "AWS::ECS::Cluster",
+            "Properties": {
+                "ClusterName": {
+                    "Fn::Sub": [
+                        "${Arg2}-${Arg1}-${ClusterName}",
+                        {
+                            "Arg1": {
+                                "Fn::FindInMap": [
+                                    "EnvironmentMap",
+                                    {
+                                        "Ref": "Environment"
+                                    },
+                                    "Prefix"
+                                ]
+                            },
+                            "Arg2": {
+                                "Fn::FindInMap": [
+                                    "AccountMap",
+                                    {
+                                        "Ref": "AWS::AccountId"
+                                    },
+                                    "Prefix"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "CapacityProviders": [
+                    "FARGATE"
+                ],
+                "ClusterSettings": [
+                    {
+                        "Name": "containerInsights",
+                        "Value": {
+                            "Ref": "ContainerInsights"
+                        }
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Sub": [
+                                "${Arg2}-${Arg1}-${ClusterName}",
+                                {
+                                    "Arg1": {
+                                        "Fn::FindInMap": [
+                                            "EnvironmentMap",
+                                            {
+                                                "Ref": "Environment"
+                                            },
+                                            "Prefix"
+                                        ]
+                                    },
+                                    "Arg2": {
+                                        "Fn::FindInMap": [
+                                            "AccountMap",
+                                            {
+                                                "Ref": "AWS::AccountId"
+                                            },
+                                            "Prefix"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "Key": "Environment",
+                        "Value": {
+                            "Ref": "Environment"
+                        }
+                    },
+                    {
+                        "Key": "Domain",
+                        "Value": {
+                            "Fn::FindInMap": [
+                                "AccountMap",
+                                {
+                                    "Ref": "AWS::AccountId"
+                                },
+                                "Name"
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

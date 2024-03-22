@@ -1,0 +1,153 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Service Discovery Template",
+    "Parameters": {
+        "Environment": {
+            "Type": "String",
+            "Description": "Choose the type of environment",
+            "AllowedValues": [
+                "main",
+                "sandbox",
+                "dev",
+                "bi"
+            ]
+        },
+        "VpcStackName": {
+            "Type": "String",
+            "Description": "VPC stack name."
+        }
+    },
+    "Metadata": {
+        "AWS::CloudFormation::Interface": {
+            "ParameterGroups": [
+                {
+                    "Label": {
+                        "default": "ECS Cluster Configuration"
+                    },
+                    "Parameters": [
+                        "ClusterName",
+                        "Environment",
+                        "ContainerInsights"
+                    ]
+                }
+            ],
+            "ParameterLabels": {
+                "ClusterName": {
+                    "default": "Cluster name"
+                },
+                "Environment": {
+                    "default": "Environment Type"
+                },
+                "ContainerInsights": {
+                    "default": "Container Insights"
+                }
+            }
+        }
+    },
+    "Mappings": {
+        "EnvironmentMap": {
+            "main": {
+                "Prefix": "main"
+            },
+            "sandbox": {
+                "Prefix": "sandbox"
+            },
+            "dev": {
+                "Prefix": "dev"
+            },
+            "bi": {
+                "Prefix": "bi"
+            }
+        },
+        "DomainMap": {
+            "efluxus": {
+                "Prefix": "efluxus",
+                "AccountId": "033795200546"
+            }
+        },
+        "AccountMap": {
+            "033795200546": {
+                "Prefix": "efluxus",
+                "Name": "E-Fluxus"
+            }
+        }
+    },
+    "Resources": {
+        "PrivateDnsNamespace": {
+            "Type": "AWS::ServiceDiscovery::PrivateDnsNamespace",
+            "Properties": {
+                "Description": {
+                    "Fn::Sub": [
+                        "Private DNS - Environment: ${Arg1} - Domain: ${Arg2}",
+                        {
+                            "Arg1": {
+                                "Fn::FindInMap": [
+                                    "EnvironmentMap",
+                                    {
+                                        "Ref": "Environment"
+                                    },
+                                    "Prefix"
+                                ]
+                            },
+                            "Arg2": {
+                                "Fn::FindInMap": [
+                                    "AccountMap",
+                                    {
+                                        "Ref": "AWS::AccountId"
+                                    },
+                                    "Prefix"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "Name": "local",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "local"
+                    },
+                    {
+                        "Key": "Environment",
+                        "Value": {
+                            "Ref": "Environment"
+                        }
+                    },
+                    {
+                        "Key": "Domain",
+                        "Value": {
+                            "Fn::FindInMap": [
+                                "AccountMap",
+                                {
+                                    "Ref": "AWS::AccountId"
+                                },
+                                "Name"
+                            ]
+                        }
+                    }
+                ],
+                "Vpc": {
+                    "Fn::ImportValue": {
+                        "Fn::Sub": "${VpcStackName}-VpcId"
+                    }
+                }
+            }
+        }
+    },
+    "Outputs": {
+        "NamespaceId": {
+            "Description": "Namespace Id.",
+            "Value": {
+                "Fn::GetAtt": [
+                    "PrivateDnsNamespace",
+                    "Id"
+                ]
+            },
+            "Export": {
+                "Name": {
+                    "Fn::Sub": "${AWS::StackName}-NamespaceId"
+                }
+            }
+        }
+    }
+}
