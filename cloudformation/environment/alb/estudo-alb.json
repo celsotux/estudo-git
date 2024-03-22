@@ -73,7 +73,7 @@
                 "GroupDescription": "Access to the public application load balancer (HTTP/HTTPS)",
                 "GroupName": {
                     "Fn::Sub": [
-                        "celsotux-${Prefix}-${LoadBalancerName}-security-group",
+                        "estudo-${Prefix}-${LoadBalancerName}-security-group",
                         {
                             "Prefix": {
                                 "Fn::FindInMap": [
@@ -113,7 +113,7 @@
                         "Key": "Name",
                         "Value": {
                             "Fn::Sub": [
-                                "celsotux-${Prefix}-${LoadBalancerName}-security-group",
+                                "estudo-${Prefix}-${LoadBalancerName}-security-group",
                                 {
                                     "Prefix": {
                                         "Fn::FindInMap": [

@@ -12,20 +12,14 @@
             "Type": "String",
             "Description": "Choose the type of environment",
             "AllowedValues": [
-                "main",
-                "sandbox",
-                "dev",
-                "bi"
+                "estudo"
             ]
         },
         "VpcStackName": {
             "Type": "String",
             "Description": "VPC stack name.",
             "AllowedValues": [
-                "efluxus-dev-vpc",
-                "efluxus-sandbox-vpc",
-                "efluxus-main-vpc",
-                "efluxus-bi-vpc"
+                "estudo-vpc"
             ]
         },
         "CertificateArn": {
@@ -67,17 +61,8 @@
     },
     "Mappings": {
         "PrefixMap": {
-            "main": {
-                "Prefix": "main"
-            },
-            "sandbox": {
-                "Prefix": "sandbox"
-            },
-            "dev": {
-                "Prefix": "dev"
-            },
-            "bi": {
-                "Prefix": "bi"
+            "estudo": {
+                "Prefix": "estudo"
             }
         }
     },
@@ -88,7 +73,7 @@
                 "GroupDescription": "Access to the public application load balancer (HTTP/HTTPS)",
                 "GroupName": {
                     "Fn::Sub": [
-                        "efluxus-${Prefix}-${LoadBalancerName}-security-group",
+                        "estudo-${Prefix}-${LoadBalancerName}-security-group",
                         {
                             "Prefix": {
                                 "Fn::FindInMap": [
@@ -128,7 +113,7 @@
                         "Key": "Name",
                         "Value": {
                             "Fn::Sub": [
-                                "efluxus-${Prefix}-${LoadBalancerName}-security-group",
+                                "estudo-${Prefix}-${LoadBalancerName}-security-group",
                                 {
                                     "Prefix": {
                                         "Fn::FindInMap": [
@@ -157,7 +142,7 @@
             "Properties": {
                 "Name": {
                     "Fn::Sub": [
-                        "efluxus-${Prefix}-${LoadBalancerName}",
+                        "estudo-${Prefix}-${LoadBalancerName}",
                         {
                             "Prefix": {
                                 "Fn::FindInMap": [
@@ -196,7 +181,7 @@
                         "Key": "Name",
                         "Value": {
                             "Fn::Sub": [
-                                "efluxus-${Prefix}-${LoadBalancerName}",
+                                "estudo-${Prefix}-${LoadBalancerName}",
                                 {
                                     "Prefix": {
                                         "Fn::FindInMap": [
