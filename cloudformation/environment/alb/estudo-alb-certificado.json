@@ -4,7 +4,7 @@
     "Parameters": {
         "LoadBalancerName": {
             "Type": "String",
-            "Description": "The name of the load balancer. This name must be unique per region per account, can have a maximum of 30 characters, must contain only alphanumeric characters or hyphens, must not begin or end with a hyphen, and must not begin with \"internal-\", \"ic-\" or \"sb-\".",
+            "Description": "The name of the load balancer. This name must be unique per region per account, can have a maximum of 29 characters, must contain only alphanumeric characters or hyphens, must not begin or end with a hyphen, and must not begin with \"internal-\", \"ic-\" or \"sb-\".",
             "MinLength": 1,
             "MaxLength": 29
         },
@@ -12,14 +12,20 @@
             "Type": "String",
             "Description": "Choose the type of environment",
             "AllowedValues": [
-                "estudo"
+                "main",
+                "sandbox",
+                "dev",
+                "bi"
             ]
         },
         "VpcStackName": {
             "Type": "String",
             "Description": "VPC stack name.",
             "AllowedValues": [
-                "estudo-vpc"
+                "efluxus-dev-vpc",
+                "efluxus-sandbox-vpc",
+                "efluxus-main-vpc",
+                "efluxus-bi-vpc"
             ]
         },
         "CertificateArn": {
@@ -61,8 +67,17 @@
     },
     "Mappings": {
         "PrefixMap": {
-            "estudo": {
-                "Prefix": "estudo"
+            "main": {
+                "Prefix": "main"
+            },
+            "sandbox": {
+                "Prefix": "sandbox"
+            },
+            "dev": {
+                "Prefix": "dev"
+            },
+            "bi": {
+                "Prefix": "bi"
             }
         }
     },
@@ -73,7 +88,7 @@
                 "GroupDescription": "Access to the public application load balancer (HTTP/HTTPS)",
                 "GroupName": {
                     "Fn::Sub": [
-                        "celsotux-${Prefix}-${LoadBalancerName}-security-group",
+                        "efluxus-${Prefix}-${LoadBalancerName}-security-group",
                         {
                             "Prefix": {
                                 "Fn::FindInMap": [
@@ -113,7 +128,7 @@
                         "Key": "Name",
                         "Value": {
                             "Fn::Sub": [
-                                "celsotux-${Prefix}-${LoadBalancerName}-security-group",
+                                "efluxus-${Prefix}-${LoadBalancerName}-security-group",
                                 {
                                     "Prefix": {
                                         "Fn::FindInMap": [
@@ -142,7 +157,7 @@
             "Properties": {
                 "Name": {
                     "Fn::Sub": [
-                        "estudo-${Prefix}-${LoadBalancerName}",
+                        "efluxus-${Prefix}-${LoadBalancerName}",
                         {
                             "Prefix": {
                                 "Fn::FindInMap": [
@@ -181,7 +196,7 @@
                         "Key": "Name",
                         "Value": {
                             "Fn::Sub": [
-                                "estudo-${Prefix}-${LoadBalancerName}",
+                                "efluxus-${Prefix}-${LoadBalancerName}",
                                 {
                                     "Prefix": {
                                         "Fn::FindInMap": [
