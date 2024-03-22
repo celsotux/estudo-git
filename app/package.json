@@ -1,0 +1,16 @@
+{
+  "name": "aws-ecs-fargate-nodejs-app",
+  "version": "1.0.0",
+  "description": "Simple Node.js app running on AWS ECS Fargate",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "serverless",
+    "ecs",
+    "fargate"
+  ],
+  "author": "Celso Nunes",
+  "license": "ISC"
+}
