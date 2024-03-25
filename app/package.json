@@ -2,9 +2,9 @@
   "name": "aws-ecs-fargate-nodejs-app",
   "version": "1.0.0",
   "description": "Simple Node.js app running on AWS ECS Fargate",
-  "main": "app.js",
+  "main": "app-server.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node app-server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
