@@ -1,0 +1,29 @@
+name: Docker Pull and Push
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Authenticate with Source ECR
+        run: |
+          echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 184078174681.dkr.ecr.us-east-1.amazonaws.com
+
+      - name: Pull Docker Image
+        run: docker pull 184078174681.dkr.ecr.us-east-1.amazonaws.com/sandbox:sandbox-api-8e938776e4e381c40f13820797b7cede85809aa3
+
+      - name: Authenticate with Destination ECR
+        run: |
+          echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 596042554638.dkr.ecr.us-east-1.amazonaws.com
+
+      - name: Tag and Push Docker Image
+        run: |
+          docker tag 184078174681.dkr.ecr.us-east-1.amazonaws.com/sandbox:sandbox-api-8e938776e4e381c40f13820797b7cede85809aa3 \
+            596042554638.dkr.ecr.us-east-1.amazonaws.com/sandbox:latest
+          docker push 596042554638.dkr.ecr.us-east-1.amazonaws.com/sandbox:latest
