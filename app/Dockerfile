@@ -3,7 +3,7 @@ RUN mkdir -p /usr/src/app
 RUN mkdir -p /usr/src/app/img
 RUN mkdir -p /usr/src/app/img/JS_Game_files
 WORKDIR /usr/src/app
-COPY app-server.js client.js index.html style.css package.json ./
+COPY apps.js index.html style.css ./
 WORKDIR /usr/src/app/img
 COPY img/bg.png img/code.png img/ia.png img/Ruido.png ./img/
 WORKDIR /usr/src/app/img/JSGame_files
