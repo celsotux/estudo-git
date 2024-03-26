@@ -9,10 +9,10 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3  # Atualização para a versão mais recente
+        uses: actions/checkout@v4  # Atualização para a versão mais recente
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v3  # Atualização para a versão mais recente
+        uses: aws-actions/configure-aws-credentials@v4  # Atualização para a versão mais recente
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
