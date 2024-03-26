@@ -1,8 +1,8 @@
 {
-  "name": "aws-ecs-fargate-nodejs-app",
+  "name": "hit-game-app",
   "version": "1.0.0",
   "description": "Simple Node.js app running on AWS ECS Fargate",
-  "main": "app-server.js",
+  "main": "app.js",
   "scripts": {
     "start": "node app-server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
