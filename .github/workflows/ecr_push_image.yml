@@ -1,22 +1,31 @@
-name: Push Docker Image to ECR
+name: Deploy to ECR
 
 on:
   workflow_dispatch:
-
+  
 jobs:
-  push_to_ecr:
+  build:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+    - name: Checkout
+      uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+    - name: Login to Amazon ECR
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
 
-      - name: Build and push Docker image
-        run: docker-compose -f file://./app/docker-compose.yml build && docker-compose -f file://./app/docker-compose.yml push
+    - name: Build Docker image
+      run: |
+        docker build -t hit-game-app .
+      
+    - name: Tag Docker image
+      run: |
+        docker tag hit-game-app:latest 791918029132.dkr.ecr.us-east-1.amazonaws.com/estudo/hit-game-app:latest
+
+    - name: Push Docker image to ECR
+      run: |
+        docker push 791918029132.dkr.ecr.us-east-1.amazonaws.com/estudo/hit-game-app:latest
