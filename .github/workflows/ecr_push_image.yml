@@ -25,7 +25,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t estudo .
+          docker build -t estudo ./app
 
       - name: Tag Docker image
         run: |
