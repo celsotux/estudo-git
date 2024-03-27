@@ -1,7 +1,0 @@
-version: '3.8'
-services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: 791918029132.dkr.ecr.us-east-1.amazonaws.com/estudo:latest  # Substitua pelo seu repositório ECR
