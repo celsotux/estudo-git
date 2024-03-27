@@ -25,12 +25,12 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t estudo ./app
+          docker build -t hit-game-app ./app
 
       - name: Tag Docker image
         run: |
-          docker tag estudo:latest 791918029132.dkr.ecr.us-east-1.amazonaws.com/estudo:latest
+          docker tag hit-game-app:latest 791918029132.dkr.ecr.us-east-1.amazonaws.com/estudo:hit-game-app
 
       - name: Push Docker image to ECR
         run: |
-          docker push 791918029132.dkr.ecr.us-east-1.amazonaws.com/estudo:latest
+          docker push 791918029132.dkr.ecr.us-east-1.amazonaws.com/estudo:hit-game-app
