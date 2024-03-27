@@ -12,8 +12,6 @@ jobs:
       REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-      GITHUB_STATE: ${{ github.workspace }}/state.env
-      GITHUB_OUTPUT: ${{ github.workspace }}/output.env
 
     steps:
       - name: Checkout
@@ -36,17 +34,8 @@ jobs:
 
       - name: Tag Docker image
         run: |
-          echo "REPOSITORY_NAME=${REPOSITORY_NAME}" >> $GITHUB_STATE
-          echo "AWS_REGION=${AWS_REGION}" >> $GITHUB_STATE
-          IMAGE_NAME="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY_NAME}:hit-game-app"
-          echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_STATE
+          docker tag hit-game-app:latest "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY_NAME}:hit-game-app"
 
       - name: Push Docker image to ECR
-        run: | 
-          docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY_NAME}:hit-game-app"
-          echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_OUTPUT
-
-      - name: Set outputs
         run: |
-          echo "REPOSITORY_NAME=${REPOSITORY_NAME}" >> $GITHUB_OUTPUT
-          echo "AWS_REGION=${AWS_REGION}" >> $GITHUB_OUTPUT
+          docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY_NAME}:hit-game-app"
