@@ -2,7 +2,7 @@ name: Deploy to ECR
 
 on:
   workflow_dispatch:
-  
+    
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,7 +20,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t hit-game-app .
+        docker build -t hit-game-app ./app
       
     - name: Tag Docker image
       run: |
