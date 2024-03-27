@@ -42,7 +42,7 @@ jobs:
 
       - name: Push Docker image to ECR
         run: | 
-          docker push ${IMAGE_NAME}
+          docker push "${IMAGE_NAME}"
           echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_OUTPUT
 
       - name: Set outputs
