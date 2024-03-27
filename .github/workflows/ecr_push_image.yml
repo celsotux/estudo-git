@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Login to Amazon ECR
-      run: docker login --username AWS --password ${{ secrets.AWS_SECRET_ACCESS_KEY }} https://791918029132.dkr.ecr.us-east-1.amazonaws.com
+      run: echo "${{ secrets.AWS_SECRET_ACCESS_KEY }}" | docker login --username AWS --password-stdin https://791918029132.dkr.ecr.us-east-1.amazonaws.com
 
     - name: Build Docker image
       run: docker build -t estudo .
