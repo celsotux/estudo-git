@@ -11,6 +11,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Uninstall containerd
+      run: |
+        sudo apt-get purge -y containerd.io
+        sudo apt-get autoremove -y
+
     - name: Install Docker
       run: |
         sudo apt-get update
