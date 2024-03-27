@@ -11,38 +11,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Uninstall containerd
-      run: |
-        sudo apt-get purge -y containerd.io
-        sudo apt-get autoremove -y
-
-    - name: Install Docker
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y docker.io
-      
-    - name: Install Docker Credential Helper AWS
-      run: |
-        sudo curl -Lo /usr/local/bin/docker-credential-ecr-login https://amazon-ecr-credential-helper-releases.s3.us-east-1.amazonaws.com/0.6.3/docker-credential-ecr-login-linux-amd64
-        sudo chmod +x /usr/local/bin/docker-credential-ecr-login
-
-    - name: Configure Docker Credential Helper AWS
-      run: |
-        mkdir -p ~/.docker
-        echo '{"credsStore": "ecr-login"}' > ~/.docker/config.json
-
     - name: Login to Amazon ECR
-      run: |
-        echo "${{ secrets.AWS_SECRET_ACCESS_KEY }}" | docker login --username AWS --password-stdin 791918029132.dkr.ecr.us-east-1.amazonaws.com
+      run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 791918029132.dkr.ecr.us-east-1.amazonaws.com
 
     - name: Build Docker image
-      run: |
-        docker build -t hit-game-app ./app
-      
+      run: docker build -t estudo .
+
     - name: Tag Docker image
-      run: |
-        docker tag hit-game-app:latest 791918029132.dkr.ecr.us-east-1.amazonaws.com/estudo/hit-game-app:latest
+      run: docker tag estudo:latest 791918029132.dkr.ecr.us-east-1.amazonaws.com/estudo:latest
 
     - name: Push Docker image to ECR
-      run: |
-        docker push 791918029132.dkr.ecr.us-east-1.amazonaws.com/estudo/hit-game-app:latest
+      run: docker push 791918029132.dkr.ecr.us-east-1.amazonaws.com/estudo:latest
