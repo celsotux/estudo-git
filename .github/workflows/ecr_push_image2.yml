@@ -34,14 +34,9 @@ jobs:
         run: |
           docker build -t hit-game-app ./app
 
-      - name: Tag Docker image
-        run: |
-          echo "REPOSITORY_NAME=${REPOSITORY_NAME}" >> $GITHUB_STATE
-          echo "AWS_REGION=${AWS_REGION}" >> $GITHUB_STATE
-          echo "IMAGE_NAME=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY_NAME}:hit-game-app" >> $GITHUB_STATE
-
       - name: Push Docker image to ECR
         run: | 
+          IMAGE_NAME="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY_NAME}:hit-game-app"
           docker push "${IMAGE_NAME}"
           echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_OUTPUT
 
