@@ -40,7 +40,8 @@ jobs:
           echo "IMAGE_NAME=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY_NAME}:hit-game-app" >> $GITHUB_STATE
 
       - name: Push Docker image to ECR
-        run: docker push ${IMAGE_NAME}
+        run: | 
+          docker push ${IMAGE_NAME}
           echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_OUTPUT
 
       - name: Set outputs
