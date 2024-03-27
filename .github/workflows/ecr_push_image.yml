@@ -29,4 +29,4 @@ jobs:
     - name: Push Docker image to ECR
       run: |
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 791918029132.dkr.ecr.us-east-1.amazonaws.com/estudo
-        docker push 791918029132.dkr.ecr.us-east-1.amazonaws.com/estudo/hit-game-app:latest
+        DOCKER_CLI_ASK_PASS=0 docker push 791918029132.dkr.ecr.us-east-1.amazonaws.com/estudo/hit-game-app:latest
