@@ -4,6 +4,12 @@ FROM node:14-alpine
 RUN apk update && \
     apk add apache2 && \
     rm -rf /var/cache/apk/*
+# Alterando hostname
+ENV HOSTNAME=hit-game-app
+RUN echo "Hostname atual: $(hostname)"
+RUN echo "HOSTNAME" > /etc/hostname
+RUN echo "Novo hostname definido: $(cat /etc/hostname)"
+   
 EXPOSE 80
 # Criando diretórios e copiando arquivos relacionados ao Node.js
 RUN mkdir -p /var/www/localhost/htdocs/img
