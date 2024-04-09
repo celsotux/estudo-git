@@ -1,29 +1,35 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "ECS Cluster Template",
+    "Description": "Modelo de Cluster ECS",
     "Parameters": {
+        "LoadBalancerName": {
+            "Type": "String",
+            "Description": "O nome do balanceador de carga. Este nome deve ser único por região por conta, pode ter no máximo 30 caracteres, deve conter apenas caracteres alfanuméricos ou hífens, não deve começar ou terminar com um hífen e não deve começar com \"internal-\", \"ic-\" ou \"sb-\".",
+            "Default": "estudo-cluster"
+        },
         "Environment": {
             "Type": "String",
-            "Description": "Choose the type of environment",
+            "Description": "Escolha o tipo de ambiente",
+            "Default": "estudo",
             "AllowedValues": [
-                "dev"
+                "estudo"
             ]
         },
         "ClusterName": {
             "Type": "String",
-            "Description": "A user-generated string that you use to identify your cluster. Do not use environment and domain prefix in the name, these will be included automatically.",
-            "Default": "cluster",
+            "Description": "Uma string gerada pelo usuário que você usa para identificar seu cluster. Não use o prefixo de ambiente e domínio no nome, pois eles serão incluídos automaticamente.",
+            "Default": "cluster-estudo",
             "MinLength": 2,
             "MaxLength": 96
         },
         "ContainerInsights": {
             "Type": "String",
-            "Description": "CloudWatch Container Insights will be enabled for the cluster, otherwise it will be disabled unless the containerInsights account setting is enabled",
+            "Description": "As informações de contêiner do CloudWatch serão habilitadas para o cluster, caso contrário, serão desabilitadas, a menos que a configuração da conta containerInsights esteja habilitada",
+            "Default": "enabled",
             "AllowedValues": [
                 "enabled",
                 "disabled"
-            ],
-            "Default": "disabled"
+            ]
         }
     },
     "Metadata": {
@@ -31,7 +37,7 @@
             "ParameterGroups": [
                 {
                     "Label": {
-                        "default": "ECS Cluster Configuration"
+                        "default": "Configuração do Cluster ECS"
                     },
                     "Parameters": [
                         "ClusterName",
@@ -42,21 +48,21 @@
             ],
             "ParameterLabels": {
                 "ClusterName": {
-                    "default": "Cluster name"
+                    "default": "Nome do Cluster"
                 },
                 "Environment": {
-                    "default": "Environment Type"
+                    "default": "Tipo de Ambiente"
                 },
                 "ContainerInsights": {
-                    "default": "Container Insights"
+                    "default": "Informações do Contêiner"
                 }
             }
         }
     },
     "Mappings": {
         "EnvironmentMap": {
-            "dev": {
-                "Prefix": "dev"
+            "estudo": {
+                "Prefix": "estudo"
             }
         },
         "DomainMap": {
@@ -78,9 +84,9 @@
             "Properties": {
                 "ClusterName": {
                     "Fn::Sub": [
-                        "${Arg2}-${Arg1}-${ClusterName}",
+                        "${Prefix}-${ClusterName}",
                         {
-                            "Arg1": {
+                            "Prefix": {
                                 "Fn::FindInMap": [
                                     "EnvironmentMap",
                                     {
@@ -89,14 +95,8 @@
                                     "Prefix"
                                 ]
                             },
-                            "Arg2": {
-                                "Fn::FindInMap": [
-                                    "AccountMap",
-                                    {
-                                        "Ref": "AWS::AccountId"
-                                    },
-                                    "Prefix"
-                                ]
+                            "ClusterName": {
+                                "Ref": "ClusterName"
                             }
                         }
                     ]
@@ -117,9 +117,9 @@
                         "Key": "Name",
                         "Value": {
                             "Fn::Sub": [
-                                "${Arg2}-${Arg1}-${ClusterName}",
+                                "${Prefix}-${ClusterName}",
                                 {
-                                    "Arg1": {
+                                    "Prefix": {
                                         "Fn::FindInMap": [
                                             "EnvironmentMap",
                                             {
@@ -128,14 +128,8 @@
                                             "Prefix"
                                         ]
                                     },
-                                    "Arg2": {
-                                        "Fn::FindInMap": [
-                                            "AccountMap",
-                                            {
-                                                "Ref": "AWS::AccountId"
-                                            },
-                                            "Prefix"
-                                        ]
+                                    "ClusterName": {
+                                        "Ref": "ClusterName"
                                     }
                                 }
                             ]
