@@ -16,10 +16,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-      - name: Set CIDR Block
-        run: echo "CIDR_BLOCK=10.3.0.0/16" >> $GITHUB_ENV
+          aws-region: us-east-1 
 
       - name: Create and Deploy Infra via CloudFormation
         run: |
