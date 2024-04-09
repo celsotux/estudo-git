@@ -5,12 +5,12 @@
         "LoadBalancerName": {
             "Type": "String",
             "Description": "The name of the load balancer. This name must be unique per region per account, can have a maximum of 30 characters, must contain only alphanumeric characters or hyphens, must not begin or end with a hyphen, and must not begin with \"internal-\", \"ic-\" or \"sb-\".",
-            "Default": "estudo-alb"         
+            "Default": "estudo-alb"
         },
         "Environment": {
             "Type": "String",
             "Description": "Choose the type of environment",
-            "default": "estudo",
+            "Default": "estudo",
             "AllowedValues": [
                 "estudo"
             ]
@@ -18,7 +18,7 @@
         "VpcStackName": {
             "Type": "String",
             "Description": "VPC stack name.",
-            "default": "estudo-vpc",
+            "Default": "estudo-vpc",
             "AllowedValues": [
                 "estudo-vpc"
             ]
