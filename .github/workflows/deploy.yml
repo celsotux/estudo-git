@@ -25,8 +25,7 @@ jobs:
               --stack-name estudo-vpc \
               --template-body file://./cloudformation/environment/vpc/estudo-vpc.json \
               --capabilities CAPABILITY_IAM \
-              --parameters ParameterKey=Environment,ParameterValue=main ParameterKey=CidrBlock,ParameterValue=$CIDR_BLOCK
-            
+                          
             aws cloudformation wait stack-create-complete --stack-name estudo-vpc
           }
 
