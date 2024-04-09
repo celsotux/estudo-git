@@ -26,7 +26,7 @@ jobs:
           deploy_stack() {
             aws cloudformation create-stack \
               --stack-name estudo-vpc \
-              --template-body file://./vpc/estudo-vpc.json \
+              --template-body file://./environment/vpc/estudo-vpc.json \
               --capabilities CAPABILITY_IAM \
               --parameters ParameterKey=Environment,ParameterValue=main ParameterKey=CidrBlock,ParameterValue=$CIDR_BLOCK
             
