@@ -22,11 +22,11 @@ jobs:
         run: |
           deploy_stack() {
             aws cloudformation create-stack \
-              --stack-name estudo-map-vpc \
+              --stack-name estudo-vpc-map \
               --template-body file://./cloudformation/environment/vpc/estudo-vpc-map.json \
               --capabilities CAPABILITY_IAM \
                           
-            aws cloudformation wait stack-create-complete --stack-name estudo-map-vpc
+            aws cloudformation wait stack-create-complete --stack-name estudo-vpc-map
           }
 
           deploy_stack
