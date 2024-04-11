@@ -105,9 +105,7 @@
                     }
                 ],
                 "VpcId": {
-                    "Fn::ImportValue": {
-                        "Fn::Sub": "${VpcStackName}-VpcId"
-                    }
+                    "Fn::ImportValue": { "Fn::Sub": "${VpcStackName}-VpcId" }
                 },
                 "Tags": [
                     {
@@ -166,14 +164,10 @@
                 ],
                 "Subnets": [
                     {
-                        "Fn::ImportValue": {
-                            "Fn::Sub": "PublicSubnet1"
-                        }
+                        "Fn::ImportValue": { "Fn::Sub": "${VpcStackName}-PublicSubnet1" }
                     },
                     {
-                        "Fn::ImportValue": {
-                            "Fn::Sub": "PublicSubnet2"
-                        }
+                        "Fn::ImportValue": { "Fn::Sub": "${VpcStackName}-PublicSubnet2" }
                     }
                 ],
                 "Type": "application",
