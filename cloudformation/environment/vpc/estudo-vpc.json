@@ -156,5 +156,14 @@
         "RouteTableId": { "Ref": "PrivateRouteTable" }
       }
     }
+  },
+  "Outputs": {
+    "VpcId": {
+      "Description": "ID da VPC",
+      "Value": { "Ref": "VPC" },
+      "Export": {
+        "Name": { "Fn::Sub": "${AWS::StackName}-VpcId" }
+      }
+    }
   }
 }
