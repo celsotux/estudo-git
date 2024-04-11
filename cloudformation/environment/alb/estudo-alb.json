@@ -167,12 +167,12 @@
                 "Subnets": [
                     {
                         "Fn::ImportValue": {
-                            "Fn::Sub": "${VpcStackName}-PublicSubnet1"
+                            "Fn::Sub": "PublicSubnet1"
                         }
                     },
                     {
                         "Fn::ImportValue": {
-                            "Fn::Sub": "${VpcStackName}-PublicSubnet2"
+                            "Fn::Sub": "PublicSubnet2"
                         }
                     }
                 ],
