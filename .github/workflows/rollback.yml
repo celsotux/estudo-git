@@ -16,4 +16,4 @@ jobs:
 
       - name: Rollback Infra via CloudFormation
         run: |
-          aws cloudformation delete-stack --stack-name estudo-vpc
+          aws cloudformation delete-stack --stack-name estudo-vpc-map
