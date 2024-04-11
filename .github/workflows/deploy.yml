@@ -18,15 +18,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1 
 
-      - name: Create and Deploy Infra via CloudFormation
+      - name: Deploy Stack
         run: |
-          deploy_stack() {
-            aws cloudformation create-stack \
-              --stack-name estudo-vpc-map \
-              --template-body file://./cloudformation/environment/vpc/estudo-vpc-map.json \
-              --capabilities CAPABILITY_IAM \
-                          
-            aws cloudformation wait stack-create-complete --stack-name estudo-vpc-map
-          }
+          aws cloudformation create-stack \
+            --stack-name estudo-vpc-map \
+            --template-body file://./cloudformation/environment/vpc/estudo-vpc-map.json \
+            --capabilities CAPABILITY_IAM
 
-          deploy_stack
+          aws cloudformation wait stack-create-complete --stack-name estudo-vpc-map
