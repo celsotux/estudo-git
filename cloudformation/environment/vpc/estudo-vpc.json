@@ -26,6 +26,9 @@
         "Tags": [
           { "Key": "Name", "Value": "PublicSubnet1" }
         ]
+      },
+      "Export": {
+        "Name": { "Fn::Sub": "${AWS::StackName}-PublicSubnet1" }
       }
     },
     "PublicSubnet2": {
@@ -38,6 +41,9 @@
         "Tags": [
           { "Key": "Name", "Value": "PublicSubnet2" }
         ]
+      },
+      "Export": {
+        "Name": { "Fn::Sub": "${AWS::StackName}-PublicSubnet2" }
       }
     },
     "PrivateSubnet1": {
