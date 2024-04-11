@@ -2,16 +2,26 @@
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "Service Discovery Template",
     "Parameters": {
+        "ServiceDiscoveryName": {
+            "Type": "String",
+            "Description": "Service Discovery Template",
+            "Default": "estudo-vpc-map"
+        },
         "Environment": {
             "Type": "String",
             "Description": "Choose the type of environment",
+            "Default": "estudo",
             "AllowedValues": [
                 "estudo"
             ]
         },
         "VpcStackName": {
             "Type": "String",
-            "Description": "VPC stack name."
+            "Description": "VPC stack name.",
+            "Default": "estudo-vpc",
+            "AllowedValues": [
+                "estudo-vpc"
+            ]
         }
     },
     "Metadata": {
