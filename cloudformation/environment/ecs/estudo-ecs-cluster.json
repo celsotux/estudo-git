@@ -1,35 +1,29 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Modelo de Cluster ECS",
+    "Description": "ECS Cluster Template",
     "Parameters": {
-        "LoadBalancerName": {
-            "Type": "String",
-            "Description": "O nome do balanceador de carga. Este nome deve ser único por região por conta, pode ter no máximo 30 caracteres, deve conter apenas caracteres alfanuméricos ou hífens, não deve começar ou terminar com um hífen e não deve começar com \"internal-\", \"ic-\" ou \"sb-\".",
-            "Default": "estudo-cluster"
-        },
         "Environment": {
             "Type": "String",
-            "Description": "Escolha o tipo de ambiente",
-            "Default": "estudo",
+            "Description": "Choose the type of environment",
             "AllowedValues": [
-                "estudo"
+                "dev"
             ]
         },
         "ClusterName": {
             "Type": "String",
-            "Description": "Uma string gerada pelo usuário que você usa para identificar seu cluster. Não use o prefixo de ambiente e domínio no nome, pois eles serão incluídos automaticamente.",
-            "Default": "cluster-estudo",
+            "Description": "A user-generated string that you use to identify your cluster. Do not use environment and domain prefix in the name, these will be included automatically.",
+            "Default": "new-ocr-cluster",
             "MinLength": 2,
             "MaxLength": 96
         },
         "ContainerInsights": {
             "Type": "String",
-            "Description": "As informações de contêiner do CloudWatch serão habilitadas para o cluster, caso contrário, serão desabilitadas, a menos que a configuração da conta containerInsights esteja habilitada",
-            "Default": "enabled",
+            "Description": "CloudWatch Container Insights will be enabled for the cluster, otherwise it will be disabled unless the containerInsights account setting is enabled",
             "AllowedValues": [
                 "enabled",
                 "disabled"
-            ]
+            ],
+            "Default": "disabled"
         }
     },
     "Metadata": {
@@ -37,7 +31,7 @@
             "ParameterGroups": [
                 {
                     "Label": {
-                        "default": "Configuração do Cluster ECS"
+                        "default": "ECS Cluster Configuration"
                     },
                     "Parameters": [
                         "ClusterName",
@@ -48,33 +42,33 @@
             ],
             "ParameterLabels": {
                 "ClusterName": {
-                    "default": "Nome do Cluster"
+                    "default": "Cluster name"
                 },
                 "Environment": {
-                    "default": "Tipo de Ambiente"
+                    "default": "Environment Type"
                 },
                 "ContainerInsights": {
-                    "default": "Informações do Contêiner"
+                    "default": "Container Insights"
                 }
             }
         }
     },
     "Mappings": {
         "EnvironmentMap": {
-            "estudo": {
-                "Prefix": "estudo"
+            "dev": {
+                "Prefix": "dev"
             }
         },
         "DomainMap": {
-            "celsotux": {
-                "Prefix": "celsotux",
+            "efluxus": {
+                "Prefix": "efluxus",
                 "AccountId": "033795200546"
             }
         },
         "AccountMap": {
             "033795200546": {
-                "Prefix": "celsotux",
-                "Name": "celso-tux"
+                "Prefix": "efluxus",
+                "Name": "E-Fluxus"
             }
         }
     },
@@ -84,9 +78,9 @@
             "Properties": {
                 "ClusterName": {
                     "Fn::Sub": [
-                        "${Prefix}-${ClusterName}",
+                        "${Arg2}-${Arg1}-${ClusterName}",
                         {
-                            "Prefix": {
+                            "Arg1": {
                                 "Fn::FindInMap": [
                                     "EnvironmentMap",
                                     {
@@ -95,8 +89,14 @@
                                     "Prefix"
                                 ]
                             },
-                            "ClusterName": {
-                                "Ref": "ClusterName"
+                            "Arg2": {
+                                "Fn::FindInMap": [
+                                    "AccountMap",
+                                    {
+                                        "Ref": "AWS::AccountId"
+                                    },
+                                    "Prefix"
+                                ]
                             }
                         }
                     ]
@@ -117,9 +117,9 @@
                         "Key": "Name",
                         "Value": {
                             "Fn::Sub": [
-                                "${Prefix}-${ClusterName}",
+                                "${Arg2}-${Arg1}-${ClusterName}",
                                 {
-                                    "Prefix": {
+                                    "Arg1": {
                                         "Fn::FindInMap": [
                                             "EnvironmentMap",
                                             {
@@ -128,8 +128,14 @@
                                             "Prefix"
                                         ]
                                     },
-                                    "ClusterName": {
-                                        "Ref": "ClusterName"
+                                    "Arg2": {
+                                        "Fn::FindInMap": [
+                                            "AccountMap",
+                                            {
+                                                "Ref": "AWS::AccountId"
+                                            },
+                                            "Prefix"
+                                        ]
                                     }
                                 }
                             ]

@@ -2,26 +2,19 @@
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "Service Discovery Template",
     "Parameters": {
-        "ServiceDiscoveryName": {
-            "Type": "String",
-            "Description": "Service Discovery Template",
-            "Default": "estudo-vpc-map"
-        },
         "Environment": {
             "Type": "String",
             "Description": "Choose the type of environment",
-            "Default": "estudo",
             "AllowedValues": [
-                "estudo"
+                "main",
+                "sandbox",
+                "dev",
+                "bi"
             ]
         },
         "VpcStackName": {
             "Type": "String",
-            "Description": "VPC stack name.",
-            "Default": "estudo-vpc",
-            "AllowedValues": [
-                "estudo-vpc"
-            ]
+            "Description": "VPC stack name."
         }
     },
     "Metadata": {
@@ -53,20 +46,29 @@
     },
     "Mappings": {
         "EnvironmentMap": {
-            "estudo": {
-                "Prefix": "estudo"
+            "main": {
+                "Prefix": "main"
+            },
+            "sandbox": {
+                "Prefix": "sandbox"
+            },
+            "dev": {
+                "Prefix": "dev"
+            },
+            "bi": {
+                "Prefix": "bi"
             }
         },
         "DomainMap": {
-            "estudo": {
-                "Prefix": "estudo",
-                "AccountId": "791918029132"
+            "efluxus": {
+                "Prefix": "efluxus",
+                "AccountId": "033795200546"
             }
         },
         "AccountMap": {
-            "791918029132": {
-                "Prefix": "estudo",
-                "Name": "estudo"
+            "033795200546": {
+                "Prefix": "efluxus",
+                "Name": "E-Fluxus"
             }
         }
     },

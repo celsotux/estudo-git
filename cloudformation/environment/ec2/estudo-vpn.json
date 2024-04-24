@@ -6,7 +6,7 @@
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "Security Group for MyEC2Instance",
-        "VpcId": "vpc-0e5368af7e42bcfcb",
+        "VpcId": "vpc-0b68a2d5afd7b3924",
         "SecurityGroupIngress": [
           {
             "IpProtocol": "tcp",
@@ -48,7 +48,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "celsotux-dev-vpn-sg"
+            "Value": "dev-vpn-sg"
           }
         ]
       }
@@ -58,7 +58,7 @@
       "Properties": {
         "InstanceType": "t2.medium",
         "ImageId": "ami-0bd9edd5984a812dc",
-        "KeyName": "celsotux-dev-ssh",
+        "KeyName": "chave-ssh",
         "BlockDeviceMappings": [
           {
             "DeviceName": "/dev/sda1",
@@ -70,11 +70,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "celsotux-dev-vpn"
+            "Value": "dev-vpn"
           },
           {
             "Key": "Domain",
-            "Value": "celso-tux"
+            "Value": "E-fluxus"
           },
           {
             "Key": "Environment",
@@ -85,7 +85,7 @@
           {
             "AssociatePublicIpAddress": true,
             "DeviceIndex": 0,
-            "SubnetId": "subnet-003754ee7f2626653",
+            "SubnetId": "subnet-07097346e301a829b",
             "GroupSet": [{ "Ref": "MyEC2SecurityGroup" }]
           }
         ]
