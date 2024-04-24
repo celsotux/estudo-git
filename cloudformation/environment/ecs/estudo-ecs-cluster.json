@@ -6,13 +6,13 @@
             "Type": "String",
             "Description": "Choose the type of environment",
             "AllowedValues": [
-                "dev"
+                "estudo"
             ]
         },
         "ClusterName": {
             "Type": "String",
             "Description": "A user-generated string that you use to identify your cluster. Do not use environment and domain prefix in the name, these will be included automatically.",
-            "Default": "new-ocr-cluster",
+            "Default": "estudo-cluster",
             "MinLength": 2,
             "MaxLength": 96
         },
@@ -23,7 +23,7 @@
                 "enabled",
                 "disabled"
             ],
-            "Default": "disabled"
+            "Default": "enabled"
         }
     },
     "Metadata": {
@@ -56,19 +56,19 @@
     "Mappings": {
         "EnvironmentMap": {
             "dev": {
-                "Prefix": "dev"
+                "Prefix": "estudo"
             }
         },
         "DomainMap": {
-            "efluxus": {
-                "Prefix": "efluxus",
-                "AccountId": "033795200546"
+            "estudo": {
+                "Prefix": "estudo",
+                "AccountId": "791918029132"
             }
         },
         "AccountMap": {
-            "033795200546": {
-                "Prefix": "efluxus",
-                "Name": "E-Fluxus"
+            "791918029132": {
+                "Prefix": "estudo",
+                "Name": "estudo"
             }
         }
     },
