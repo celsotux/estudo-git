@@ -45,8 +45,7 @@
       "Export": {
         "Name": { "Fn::Sub": "${AWS::StackName}-PublicSubnet2" }
       }
-    },
-    // outros recursos da VPC
+    }
   },
   "Outputs": {
     "VpcId": {
