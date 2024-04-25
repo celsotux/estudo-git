@@ -13,7 +13,7 @@
         "ClusterName": {
             "Type": "String",
             "Description": "A user-generated string that you use to identify your cluster. Do not use environment and domain prefix in the name, these will be included automatically.",
-            "Default": "estudo-dev-cluster",
+            "Default": "cluster",
             "MinLength": 2,
             "MaxLength": 96
         },
