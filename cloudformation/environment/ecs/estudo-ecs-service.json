@@ -79,7 +79,7 @@
         "HostName": {
             "Type": "String",
             "Description": "One host names",
-            "Default": "app-game.efluxus.io"
+            "Default": "app-game.estudocloud.io"
         },
         "LoadBalancerStackName": {
             "Type": "String",
