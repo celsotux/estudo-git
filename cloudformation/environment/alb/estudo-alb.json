@@ -28,8 +28,7 @@
                     "Parameters": [
                         "LoadBalancerName",
                         "Environment",
-                        "VpcStackName",
-                        "CertificateArn"
+                        "VpcStackName"
                     ]
                 }
             ],
@@ -229,13 +228,6 @@
                 },
                 "Port": 443,
                 "Protocol": "HTTPS",
-                "Certificates": [
-                    {
-                        "CertificateArn": {
-                            "Ref": "CertificateArn"
-                        }
-                    }
-                ],
                 "DefaultActions": [
                     {
                         "Type": "fixed-response",
