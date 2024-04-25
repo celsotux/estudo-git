@@ -63,11 +63,11 @@
         "DomainMap": {
             "estudo": {
                 "Prefix": "estudo",
-                "AccountId": "033795200546"
+                "AccountId": "791918029132"
             }
         },
         "AccountMap": {
-            "033795200546": {
+            "791918029132": {
                 "Prefix": "estudo",
                 "Name": "dev"
             }
