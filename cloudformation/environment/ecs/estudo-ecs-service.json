@@ -89,9 +89,9 @@
             "Type": "String",
             "Description": "VPC stack name.",
             "AllowedValues": [
-                "estudo-dev-vpc"
+                "estudo-vpc"
             ],
-            "Default": "estudo-dev-vpc"
+            "Default": "estudo-vpc"
         },
         "ServiceDiscoveryStackName": {
             "Type": "String",
@@ -563,7 +563,8 @@
                         "CidrIp": {
                             "Fn::ImportValue": {
                                 "Fn::Sub": "${VpcStackName}-VpcCidrBlock"
-                            }
+                            },
+                            "VpcCidrBlock": "10.5.0.0/16"
                         },
                         "FromPort": {
                             "Ref": "ContainerPort"
