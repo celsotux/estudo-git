@@ -10,7 +10,7 @@
         },
         "Environment": {
             "Type": "String",
-            "Description": "estudo"
+            "Default": "estudo"
             
         },
         "VpcStackName": {
@@ -47,7 +47,7 @@
                     "default": "Environment Type"
                 },
                 "VpcStackName": {
-                    "default": "VPC stack name"
+                    "default": "estudo-vpc"
                 },
                 "CertificateArn": {
                     "default": "CertificateArn"
