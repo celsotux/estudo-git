@@ -6,10 +6,7 @@
           "Type": "String",
           "Description": "Select your environment type",
           "AllowedValues": [
-              "main",
-              "sandbox",
-              "dev",
-              "bi"
+              "estudo"
           ]
       },
       "CidrBlock": {
@@ -47,28 +44,19 @@
   "Mappings": {
       "EnvironmentMap": {
           "main": {
-              "Prefix": "main"
-          },
-          "sandbox": {
-              "Prefix": "sandbox"
-          },
-          "dev": {
-              "Prefix": "dev"
-          },
-          "bi": {
-              "Prefix": "bi"
+              "Prefix": "estudo"
           }
       },
       "DomainMap": {
-          "efluxus": {
-              "Prefix": "efluxus",
+          "estudo": {
+              "Prefix": "estudo",
               "AccountId": "033795200546"
           }
       },
       "AccountMap": {
           "033795200546": {
-              "Prefix": "efluxus",
-              "Name": "E-Fluxus"
+              "Prefix": "estudo",
+              "Name": "estudo"
           }
       }
   },
