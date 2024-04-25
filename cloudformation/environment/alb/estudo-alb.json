@@ -16,11 +16,6 @@
             "Type": "String",
             "Default": "estudo-vpc"
             
-        },
-        "CertificateArn": {
-            "Default": "",
-            "Description": "The Amazon Resource Name (ARN) of the certificate.",
-            "Type": "String"
         }
     },
     "Metadata": {
