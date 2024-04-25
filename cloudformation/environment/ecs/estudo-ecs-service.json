@@ -563,14 +563,8 @@
                         "IpProtocol": "tcp",
                         "FromPort": 80,
                         "ToPort": 80,
-                        "CidrIP": {
-                            "Fn::ImportValue": "${VpcStackName}-VpcCidrBlock"
-
-                        }
-                            
+                        "CidrIP":"10.5.0.0/16"
                     }
-                        
-                    
                 ],
 
                 "VpcId": {
