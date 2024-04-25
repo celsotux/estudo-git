@@ -560,22 +560,19 @@
                 },
                 "SecurityGroupIngress": [
                     {
-                        "CidrIp": {
-                            "Fn::ImportValue": {
-                                "Fn::Sub": "${VpcStackName}-VpcCidrBlock"
-                            },
-                            "VpcCidrBlock": "10.5.0.0/16"
-                        },
-                        "FromPort": {
-                            "Ref": "ContainerPort"
-                        },
-                        "ToPort": {
-                            "Ref": "ContainerPort"
-                        },
                         "IpProtocol": "tcp",
-                        "Description": "HTTP Traffic"
+                        "FromPort": 80,
+                        "ToPort": 80,
+                        "CidrIP": {
+                            "Fn::ImportValue": "${VpcStackName}-VpcCidrBlock"
+
+                        }
+                            
                     }
+                        
+                    
                 ],
+
                 "VpcId": {
                     "Fn::ImportValue": {
                         "Fn::Sub": "${VpcStackName}-VpcId"
