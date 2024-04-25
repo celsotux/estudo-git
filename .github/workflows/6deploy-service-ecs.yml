@@ -1,0 +1,28 @@
+name: 1-Deploy VPC Infra
+
+on:
+  workflow_dispatch:
+ 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3  # Atualização para a versão mais recente
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3  # Atualização para a versão mais recente
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1 
+
+      - name: Deploy Stack
+        run: |
+          aws cloudformation create-stack \
+            --stack-name estudo-vpc \
+            --template-body file://./cloudformation/environment/ecs/estudo-ecs-service.json \
+            --capabilities CAPABILITY_IAM
+
+          aws cloudformation wait stack-create-complete --stack-name estudo-vpc
