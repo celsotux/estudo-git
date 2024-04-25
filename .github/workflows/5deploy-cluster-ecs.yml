@@ -25,4 +25,4 @@ jobs:
             --template-body file://./cloudformation/environment/ecs/estudo-ecs-cluster.json \
             --capabilities CAPABILITY_IAM
 
-          aws cloudformation wait stack-create-complete --stack-name estudo-vpc
+          aws cloudformation wait stack-create-complete --stack-name estudo-ecs-cluster
