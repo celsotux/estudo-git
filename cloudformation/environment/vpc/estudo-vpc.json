@@ -42,8 +42,8 @@
   },
   "Mappings": {
       "EnvironmentMap": {
-          "estudo": {
-              "Prefix": "estudo"
+          "dev": {
+              "Prefix": "dev"
           }
       },
       "DomainMap": {
