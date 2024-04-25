@@ -4,18 +4,15 @@
     "Parameters": {
         "LoadBalancerName": {
             "Type": "String",
-            "Default": "estudo-alb"
-            
+            "Default": "alb"
         },
         "Environment": {
             "Type": "String",
             "Default": "dev"
-            
         },
         "VpcStackName": {
             "Type": "String",
             "Default": "estudo-vpc"
-            
         }
     },
     "Metadata": {
@@ -56,7 +53,7 @@
         "SecurityGroup": {
             "Type": "AWS::EC2::SecurityGroup",
             "Properties": {
-                "GroupDescription": "Access to the public application load balancer (HTTP/HTTPS)",
+                "GroupDescription": "Access to the public application load balancer (HTTP)",
                 "GroupName": {
                     "Fn::Sub": [
                         "estudo-${Prefix}-${LoadBalancerName}-security-group",
@@ -80,13 +77,6 @@
                         "ToPort": 80,
                         "IpProtocol": "tcp",
                         "Description": "HTTP Traffic"
-                    },
-                    {
-                        "CidrIp": "0.0.0.0/0",
-                        "FromPort": 443,
-                        "ToPort": 443,
-                        "IpProtocol": "tcp",
-                        "Description": "HTTPS Traffic"
                     }
                 ],
                 "VpcId": {
@@ -204,32 +194,6 @@
                 "Protocol": "HTTP",
                 "DefaultActions": [
                     {
-                        "Type": "redirect",
-                        "RedirectConfig": {
-                            "Protocol": "HTTPS",
-                            "Port": 443,
-                            "Host": "#{host}",
-                            "Path": "/#{path}",
-                            "Query": "#{query}",
-                            "StatusCode": "HTTP_301"
-                        }
-                    }
-                ]
-            }
-        },
-        "HTTPSlistener": {
-            "Type": "AWS::ElasticLoadBalancingV2::Listener",
-            "DependsOn": [
-                "ApplicationLoadBalancer"
-            ],
-            "Properties": {
-                "LoadBalancerArn": {
-                    "Ref": "ApplicationLoadBalancer"
-                },
-                "Port": 443,
-                "Protocol": "HTTPS",
-                "DefaultActions": [
-                    {
                         "Type": "fixed-response",
                         "FixedResponseConfig": {
                             "StatusCode": "404",
@@ -273,7 +237,7 @@
         "ListenerArn": {
             "Description": "The Amazon Resource Name (ARN) of the listener.",
             "Value": {
-                "Ref": "HTTPSlistener"
+                "Ref": "HTTPlistener"
             },
             "Export": {
                 "Name": {
