@@ -4,12 +4,12 @@
     "Parameters": {
         "LoadBalancerName": {
             "Type": "String",
-            "Default": "estudo"
+            "Default": "estudo-alb"
             
         },
         "Environment": {
             "Type": "String",
-            "Default": "estudo"
+            "Default": "dev"
             
         },
         "VpcStackName": {
@@ -56,8 +56,8 @@
     },
     "Mappings": {
         "PrefixMap": {
-            "estudo": {
-                "Prefix": "estudo"
+            "dev": {
+                "Prefix": "dev"
             }
         }
     },
@@ -68,7 +68,7 @@
                 "GroupDescription": "Access to the public application load balancer (HTTP/HTTPS)",
                 "GroupName": {
                     "Fn::Sub": [
-                        "efluxus-${Prefix}-${LoadBalancerName}-security-group",
+                        "estudo-${Prefix}-${LoadBalancerName}-security-group",
                         {
                             "Prefix": {
                                 "Fn::FindInMap": [
@@ -108,7 +108,7 @@
                         "Key": "Name",
                         "Value": {
                             "Fn::Sub": [
-                                "efluxus-${Prefix}-${LoadBalancerName}-security-group",
+                                "estudo-${Prefix}-${LoadBalancerName}-security-group",
                                 {
                                     "Prefix": {
                                         "Fn::FindInMap": [
@@ -137,7 +137,7 @@
             "Properties": {
                 "Name": {
                     "Fn::Sub": [
-                        "efluxus-${Prefix}-${LoadBalancerName}",
+                        "estudo-${Prefix}-${LoadBalancerName}",
                         {
                             "Prefix": {
                                 "Fn::FindInMap": [
@@ -176,7 +176,7 @@
                         "Key": "Name",
                         "Value": {
                             "Fn::Sub": [
-                                "efluxus-${Prefix}-${LoadBalancerName}",
+                                "estudo-${Prefix}-${LoadBalancerName}",
                                 {
                                     "Prefix": {
                                         "Fn::FindInMap": [
