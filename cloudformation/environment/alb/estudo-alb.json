@@ -12,14 +12,20 @@
             "Type": "String",
             "Description": "Choose the type of environment",
             "AllowedValues": [
-                "estudo"
+                "main",
+                "sandbox",
+                "dev",
+                "bi"
             ]
         },
         "VpcStackName": {
             "Type": "String",
             "Description": "VPC stack name.",
             "AllowedValues": [
-                "estudo-vpc"
+                "efluxus-dev-vpc",
+                "efluxus-sandbox-vpc",
+                "efluxus-main-vpc",
+                "efluxus-bi-vpc"
             ]
         },
         "CertificateArn": {
@@ -61,8 +67,17 @@
     },
     "Mappings": {
         "PrefixMap": {
-            "estudo": {
-                "Prefix": "estudo"
+            "main": {
+                "Prefix": "main"
+            },
+            "sandbox": {
+                "Prefix": "sandbox"
+            },
+            "dev": {
+                "Prefix": "dev"
+            },
+            "bi": {
+                "Prefix": "bi"
             }
         }
     },

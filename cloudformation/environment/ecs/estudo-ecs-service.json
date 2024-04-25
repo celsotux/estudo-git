@@ -6,20 +6,26 @@
             "Type": "String",
             "Description": "Choose the type of environment",
             "AllowedValues": [
-                "estudo"
+                "main",
+                "sandbox",
+                "dev",
+                "bi"
             ]
         },
         "ECSCluster": {
             "Type": "String",
             "Description": "The short name of the cluster on which to run your service.",
             "AllowedValues": [
-                "estudo-cluster"
+                "efluxus-dev-cluster",
+                "efluxus-sandbox-cluster",
+                "efluxus-main-cluster",
+                "efluxus-bi-cluster"
             ]
         },
         "ServiceName": {
             "Type": "String",
             "Description": "The name of your service. Up to 255 letters (uppercase and lowercase), numbers, and hyphens are allowed.",
-            "Default": "app"
+            "Default": "api"
         },
         "DesiredCount": {
             "Type": "Number",
@@ -76,7 +82,7 @@
         "HostName": {
             "Type": "String",
             "Description": "One host names",
-            "Default": "app-teste.efluxos.io"
+            "Default": "some.url.com"
         },
         "LoadBalancerStackName": {
             "Type": "String",
@@ -86,14 +92,20 @@
             "Type": "String",
             "Description": "VPC stack name.",
             "AllowedValues": [
-                "estudo-vpc"
+                "efluxus-dev-vpc",
+                "efluxus-sandbox-vpc",
+                "efluxus-main-vpc",
+                "efluxus-bi-vpc"
             ]
         },
         "ServiceDiscoveryStackName": {
             "Type": "String",
             "Description": "Service Discovery stack name.",
             "AllowedValues": [
-                "estudo-vpc-map"
+                "efluxus-dev-map",
+                "efluxus-sandbox-map",
+                "efluxus-main-map",
+                "efluxus-bi-map"
             ]
         },
         "DnsRecordType": {
@@ -128,19 +140,28 @@
     "Mappings": {
         "EnvironmentMap": {
             "main": {
-                "Prefix": "estudo"
+                "Prefix": "main"
+            },
+            "sandbox": {
+                "Prefix": "sandbox"
+            },
+            "dev": {
+                "Prefix": "dev"
+            },
+            "bi": {
+                "Prefix": "bi"
             }
         },
         "DomainMap": {
-            "estudo": {
-                "Prefix": "estudo",
-                "AccountId": "791918029132"
+            "efluxus": {
+                "Prefix": "efluxus",
+                "AccountId": "033795200546"
             }
         },
         "AccountMap": {
-            "791918029132": {
-                "Prefix": "estudo",
-                "Name": "estudo"
+            "033795200546": {
+                "Prefix": "efluxus",
+                "Name": "E-Fluxus"
             }
         },
         "TaskSizeMap": {
