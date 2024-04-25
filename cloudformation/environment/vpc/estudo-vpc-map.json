@@ -40,7 +40,7 @@
   },
   "Mappings": {
       "EnvironmentMap": {
-          "main": {
+          "estudo": {
               "Prefix": "estudo"
           }
       },
