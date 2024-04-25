@@ -42,9 +42,6 @@
                 },
                 "VpcStackName": {
                     "default": "estudo-vpc"
-                },
-                "CertificateArn": {
-                    "default": "CertificateArn"
                 }
             }
         }
