@@ -6,26 +6,22 @@
             "Type": "String",
             "Description": "Choose the type of environment",
             "AllowedValues": [
-                "main",
-                "sandbox",
-                "dev",
-                "bi"
-            ]
+                "estudo"
+            ],
+            "Default": "estudo" 
         },
         "ECSCluster": {
             "Type": "String",
             "Description": "The short name of the cluster on which to run your service.",
             "AllowedValues": [
-                "efluxus-dev-cluster",
-                "efluxus-sandbox-cluster",
-                "efluxus-main-cluster",
-                "efluxus-bi-cluster"
-            ]
+                "estudo-dev-cluster"
+            ],
+            "Default": "estudo-dev-cluster"
         },
         "ServiceName": {
             "Type": "String",
             "Description": "The name of your service. Up to 255 letters (uppercase and lowercase), numbers, and hyphens are allowed.",
-            "Default": "api"
+            "Default": "app-game"
         },
         "DesiredCount": {
             "Type": "Number",
@@ -35,7 +31,7 @@
         "ContainerImage": {
             "Type": "String",
             "Description": "The image used to start a container.",
-            "Default": "184078174681.dkr.ecr.us-east-1.amazonaws.com/hello-world:latest"
+            "Default": "791918029132.dkr.ecr.us-east-1.amazonaws.com/estudo:hit-game-app"
         },
         "ContainerPort": {
             "Type": "Number",
@@ -44,7 +40,7 @@
         },
         "HealthCheckPath": {
             "Type": "String",
-            "Default": "/health-check"
+            "Default": "/"
         },
         "TaskSize": {
             "Type": "String",
@@ -67,7 +63,8 @@
             "Description": "Service type.",
             "AllowedValues": [
                 "External"
-            ]
+            ],
+            "Default": "External"
         },
         "RulePriority": {
             "Type": "Number",
@@ -82,31 +79,27 @@
         "HostName": {
             "Type": "String",
             "Description": "One host names",
-            "Default": "some.url.com"
+            "Default": "app-game.efluxus.io"
         },
         "LoadBalancerStackName": {
             "Type": "String",
-            "Description": "Application Load Balancer stack name."
+            "Default": "estudo-alb"
         },
         "VpcStackName": {
             "Type": "String",
             "Description": "VPC stack name.",
             "AllowedValues": [
-                "efluxus-dev-vpc",
-                "efluxus-sandbox-vpc",
-                "efluxus-main-vpc",
-                "efluxus-bi-vpc"
-            ]
+                "estudo-dev-vpc"
+            ],
+            "Default": "estudo-dev-vpc"
         },
         "ServiceDiscoveryStackName": {
             "Type": "String",
             "Description": "Service Discovery stack name.",
             "AllowedValues": [
-                "efluxus-dev-map",
-                "efluxus-sandbox-map",
-                "efluxus-main-map",
-                "efluxus-bi-map"
-            ]
+                "estudo-vpc-map"
+            ],
+            "Default": "estudo-vpc-map"
         },
         "DnsRecordType": {
             "Type": "String",
@@ -116,7 +109,8 @@
                 "AAAA",
                 "CNAME",
                 "SRV"
-            ]
+            ],
+            "Default": "A"
         }
     },
     "Conditions": {
@@ -139,29 +133,20 @@
     },
     "Mappings": {
         "EnvironmentMap": {
-            "main": {
-                "Prefix": "main"
-            },
-            "sandbox": {
-                "Prefix": "sandbox"
-            },
-            "dev": {
-                "Prefix": "dev"
-            },
-            "bi": {
-                "Prefix": "bi"
+            "estudo": {
+                "Prefix": "estudo"
             }
         },
         "DomainMap": {
-            "efluxus": {
-                "Prefix": "efluxus",
-                "AccountId": "033795200546"
+            "estudo": {
+                "Prefix": "estudo",
+                "AccountId": "791918029132"
             }
         },
         "AccountMap": {
-            "033795200546": {
-                "Prefix": "efluxus",
-                "Name": "E-Fluxus"
+            "791918029132": {
+                "Prefix": "estudo",
+                "Name": "dev"
             }
         },
         "TaskSizeMap": {
