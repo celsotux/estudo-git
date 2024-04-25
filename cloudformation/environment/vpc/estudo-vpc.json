@@ -4,14 +4,13 @@
   "Parameters": {
       "Environment": {
           "Type": "String",
-          "Description": "Select your environment type",
-          "AllowedValues": [
-              "estudo"
-          ]
+          "Default": "estudo"
+          
       },
       "CidrBlock": {
           "Type": "String",
-          "Description": "The primary IPv4 CIDR block for the VPC."
+          "Default": "10.5.0.0/16"
+          
       }
   },
   "Metadata": {
@@ -31,7 +30,7 @@
                   },
                   "Parameters": [
                       "CidrBlock"
-                  ]
+                    ]
               }
           ],
           "ParameterLabels": {
