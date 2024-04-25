@@ -36,7 +36,7 @@
         "ContainerPort": {
             "Type": "Number",
             "Description": "The port number on the container that is bound to the user-specified or automatically assigned host port.",
-            "Default": 3000
+            "Default": 80
         },
         "HealthCheckPath": {
             "Type": "String",
