@@ -4,9 +4,8 @@
     "Parameters": {
         "LoadBalancerName": {
             "Type": "String",
-            "Description": "The name of the load balancer. This name must be unique per region per account, can have a maximum of 29 characters, must contain only alphanumeric characters or hyphens, must not begin or end with a hyphen, and must not begin with \"internal-\", \"ic-\" or \"sb-\".",
-            "MinLength": 1,
-            "MaxLength": 29
+            "Default": "estudo"
+            
         },
         "Environment": {
             "Type": "String",
