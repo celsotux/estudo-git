@@ -21,7 +21,7 @@
         "ServiceName": {
             "Type": "String",
             "Description": "The name of your service. Up to 255 letters (uppercase and lowercase), numbers, and hyphens are allowed.",
-            "Default": "app-game"
+            "Default": "app-game2"
         },
         "DesiredCount": {
             "Type": "Number",
@@ -79,7 +79,7 @@
         "HostName": {
             "Type": "String",
             "Description": "One host names",
-            "Default": "app-game.estudocloud.io"
+            "Default": "app-game2.estudocloud.io"
         },
         "LoadBalancerStackName": {
             "Type": "String",
