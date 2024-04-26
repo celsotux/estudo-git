@@ -40,7 +40,7 @@
         },
         "HealthCheckPath": {
             "Type": "String",
-            "Default": "/health-check"
+            "Default": "/healthcheck"
         },
         "TaskSize": {
             "Type": "String",
