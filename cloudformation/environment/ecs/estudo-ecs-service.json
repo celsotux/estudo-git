@@ -6,9 +6,9 @@
             "Type": "String",
             "Description": "Choose the type of environment",
             "AllowedValues": [
-                "estudo"
+                "dev"
             ],
-            "Default": "estudo" 
+            "Default": "dev" 
         },
         "ECSCluster": {
             "Type": "String",
@@ -40,7 +40,7 @@
         },
         "HealthCheckPath": {
             "Type": "String",
-            "Default": "/"
+            "Default": "healthchek/"
         },
         "TaskSize": {
             "Type": "String",
@@ -133,8 +133,8 @@
     },
     "Mappings": {
         "EnvironmentMap": {
-            "estudo": {
-                "Prefix": "estudo"
+            "dev": {
+                "Prefix": "dev"
             }
         },
         "DomainMap": {
