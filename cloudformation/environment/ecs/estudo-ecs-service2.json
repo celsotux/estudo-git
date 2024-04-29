@@ -1,0 +1,95 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "The template used to create an ECS Service from the ECS Console.",
+    "Parameters": {
+      "ECSClusterName": {
+        "Type": "String",
+        "Default": "estudo-dev-cluster"
+      },
+      "ECSServiceName": {
+        "Type": "String",
+        "Default": "estudo-dev-app-game"
+      },
+      "SecurityGroupIDs": {
+        "Type": "CommaDelimitedList",
+        "Default": "sg-0d7176af3fd0e8f08"
+      },
+      "SubnetIDs": {
+        "Type": "CommaDelimitedList",
+        "Default": "subnet-00f4f2f19bd1dda9a,subnet-0c6322beef538dc66"
+      },
+      "VpcID": {
+        "Type": "String",
+        "Default": "vpc-08f6d712eed0e13a6"
+      },
+      "LoadBalancerName": {
+        "Type": "String",
+        "Default": "estudo-dev-alb"
+      }
+    },
+    "Resources": {
+      "ECSService": {
+        "Type": "AWS::ECS::Service",
+        "Properties": {
+          "Cluster": "estudo-dev-cluster",
+          "TaskDefinition": "arn:aws:ecs:us-east-1:791918029132:task-definition/estudo-dev-app-game:6",
+          "LaunchType": "FARGATE",
+          "ServiceName": "estudo-dev-app-game",
+          "SchedulingStrategy": "REPLICA",
+          "DesiredCount": 1,
+          "LoadBalancers": [
+            {
+              "ContainerName": "app-game",
+              "ContainerPort": 80,
+              "LoadBalancerName": {
+                "Ref": "AWS::NoValue"
+              },
+              "TargetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:791918029132:targetgroup/estudo-dev-app-game/95fc5475f3f0bfbc"
+            }
+          ],
+          "NetworkConfiguration": {
+            "AwsvpcConfiguration": {
+              "AssignPublicIp": "DISABLED",
+              "SecurityGroups": {
+                "Ref": "SecurityGroupIDs"
+              },
+              "Subnets": {
+                "Ref": "SubnetIDs"
+              }
+            }
+          },
+          "PlatformVersion": "1.4.0",
+          "DeploymentConfiguration": {
+            "MaximumPercent": 200,
+            "MinimumHealthyPercent": 100,
+            "DeploymentCircuitBreaker": {
+              "Enable": true,
+              "Rollback": true
+            }
+          },
+          "DeploymentController": {
+            "Type": "ECS"
+          },
+          "ServiceConnectConfiguration": {
+            "Enabled": false
+          },
+          "Tags": [],
+          "EnableECSManagedTags": true
+        }
+      }
+    },
+    "Outputs": {
+      "ClusterName": {
+        "Description": "The cluster used to create the service.",
+        "Value": {
+          "Ref": "ECSClusterName"
+        }
+      },
+      "ECSService": {
+        "Description": "The created service.",
+        "Value": {
+          "Ref": "ECSService"
+        }
+      }
+    }
+  }
