@@ -4,19 +4,19 @@
     "Parameters": {
       "ClusterName": {
         "Type": "String",
-        "Description": "Nome para o cluster Amazon EKS"
+        "Description": "estudo-cluster-eks"
       },
       "VpcStackName": {
         "Type": "String",
-        "Description": "Nome da stack da VPC (estudo-eks-vpc)"
+        "Description": "estudo-eks-vpc"
       },
       "CloudMapStackName": {
         "Type": "String",
-        "Description": "Nome da stack do CloudMap (estudo-cloud-map-eks)"
+        "Description": "estudo-cloud-map-eks"
       },
       "ImageId": {
         "Type": "String",
-        "Description": "ID da imagem do Docker para o contêiner do EKS"
+        "Description": "app-game"
       }
     },
     "Resources": {
