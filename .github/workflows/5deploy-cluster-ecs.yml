@@ -22,7 +22,7 @@ jobs:
         run: |
           aws cloudformation create-stack \
             --stack-name estudo-ecs-cluster \
-            --template-body file://./cloudformation/environment/ecs/estudo-ecs-cluster.json \
+            --template-body file://./FARGATE/cloudformation/environment/ecs/estudo-ecs-cluster.json \
             --capabilities CAPABILITY_IAM
 
           aws cloudformation wait stack-create-complete --stack-name estudo-ecs-cluster
