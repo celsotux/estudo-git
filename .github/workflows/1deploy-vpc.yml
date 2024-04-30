@@ -22,7 +22,7 @@ jobs:
         run: |
           aws cloudformation create-stack \
             --stack-name estudo-vpc \
-            --template-body file://./FARGATE/cloudformation/environment/vpc/estudo-vpc.json \
+            --template-body file://./cloudformation/environment/FARGATE/vpc/estudo-vpc.json \
             --capabilities CAPABILITY_IAM
 
           aws cloudformation wait stack-create-complete --stack-name estudo-vpc

@@ -22,7 +22,7 @@ jobs:
         run: |
           aws cloudformation create-stack \
             --stack-name estudo-alb \
-            --template-body file://./FARGATE/cloudformation/environment/alb/estudo-alb.json \
+            --template-body file://./cloudformation/environment/FARGATE/alb/estudo-alb.json \
             --capabilities CAPABILITY_IAM
 
           aws cloudformation wait stack-create-complete --stack-name estudo-alb
