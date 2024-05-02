@@ -1,147 +1,129 @@
 {
-    "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Cria um cluster Amazon EKS e um serviço LoadBalancer para uma aplicação",
-    "Parameters": {
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Cria um cluster Amazon EKS e um serviço LoadBalancer para uma aplicação",
+  "Parameters": {
       "ClusterName": {
-        "Type": "String",
-        "Description": "estudo-cluster-eks"
+          "Type": "String",
+          "Description": "Nome do cluster Amazon EKS"
       },
       "VpcStackName": {
-        "Type": "String",
-        "Description": "estudo-eks-vpc"
+          "Type": "String",
+          "Description": "Nome da stack da VPC"
       },
       "CloudMapStackName": {
-        "Type": "String",
-        "Description": "estudo-cloud-map-eks"
+          "Type": "String",
+          "Description": "Nome da stack do CloudMap"
       },
       "ImageId": {
-        "Type": "String",
-        "Description": "app-game"
+          "Type": "String",
+          "Description": "ID da imagem Docker para o contêiner do EKS"
       }
-    },
-    "Resources": {
+  },
+  "Resources": {
       "TaskDefinition": {
-        "Type": "AWS::ECS::TaskDefinition",
-        "Properties": {
-          "ContainerDefinitions": [
-            {
-              "Name": "app-container",
-              "Image": { "Ref": "ImageId" }, 
-              "PortMappings": [
-                {
-                  "ContainerPort": 80
-                }
+          "Type": "AWS::ECS::TaskDefinition",
+          "Properties": {
+              "ContainerDefinitions": [
+                  {
+                      "Name": "app-container",
+                      "Image": { "Ref": "ImageId" },
+                      "PortMappings": [
+                          {
+                              "ContainerPort": 80
+                          }
+                      ]
+                  }
               ]
-            }
-          ]
-        }
+          }
       },
       "Cluster": {
-        "Type": "AWS::EKS::Cluster",
-        "Properties": {
-          "Name": { "Ref": "ClusterName" },
-          "Version": "1.21"
-        }
-      },
-      "Service": {
-        "Type": "AWS::EKS::Service",
-        "Properties": {
-          "ClusterName": { "Ref": "ClusterName" },
-          "Name": "app-service",
-          "Namespace": {
-            "Fn::ImportValue": {
-              "Fn::Sub": "${CloudMapStackName}-Namespace"
-            }
-          },
-          "Type": "LoadBalancer",
-          "ServicePort": 80,
-          "Selector": {
-            "app": "app-game"
+          "Type": "AWS::EKS::Cluster",
+          "Properties": {
+              "Name": { "Ref": "ClusterName" },
+              "Version": "1.21"
           }
-        }
       },
       "IngressSecurityGroup": {
-        "Type": "AWS::EC2::SecurityGroup",
-        "Properties": {
-          "GroupDescription": "Security group for ALB to allow HTTP traffic",
-          "VpcId": {
-            "Fn::ImportValue": {
-              "Fn::Sub": "${VpcStackName}-VPCID"
-            }
-          },
-          "SecurityGroupIngress": [
-            {
-              "IpProtocol": "tcp",
-              "FromPort": 80,
-              "ToPort": 80,
-              "CidrIp": "0.0.0.0/0"
-            }
-          ]
-        }
+          "Type": "AWS::EC2::SecurityGroup",
+          "Properties": {
+              "GroupDescription": "Security group for ALB to allow HTTP traffic",
+              "VpcId": {
+                  "Fn::ImportValue": {
+                      "Fn::Sub": "${VpcStackName}-VPCID"
+                  }
+              },
+              "SecurityGroupIngress": [
+                  {
+                      "IpProtocol": "tcp",
+                      "FromPort": 80,
+                      "ToPort": 80,
+                      "CidrIp": "0.0.0.0/0"
+                  }
+              ]
+          }
       },
       "ALB": {
-        "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
-        "Properties": {
-          "Name": "MyALB",
-          "Scheme": "internet-facing",
-          "Subnets": [
-            {
-              "Fn::ImportValue": {
-                "Fn::Sub": "${VpcStackName}-PublicSubnet1"
-              }
-            },
-            {
-              "Fn::ImportValue": {
-                "Fn::Sub": "${VpcStackName}-PublicSubnet2"
-              }
-            }
-          ],
-          "SecurityGroups": [
-            {
-              "Ref": "IngressSecurityGroup"
-            }
-          ],
-          "Type": "application"
-        }
+          "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+          "Properties": {
+              "Name": "MyALB",
+              "Scheme": "internet-facing",
+              "Subnets": [
+                  {
+                      "Fn::ImportValue": {
+                          "Fn::Sub": "${VpcStackName}-PublicSubnet1"
+                      }
+                  },
+                  {
+                      "Fn::ImportValue": {
+                          "Fn::Sub": "${VpcStackName}-PublicSubnet2"
+                      }
+                  }
+              ],
+              "SecurityGroups": [
+                  {
+                      "Ref": "IngressSecurityGroup"
+                  }
+              ],
+              "Type": "application"
+          }
       },
       "ALBListener": {
-        "Type": "AWS::ElasticLoadBalancingV2::Listener",
-        "Properties": {
-          "DefaultActions": [
-            {
-              "Type": "forward",
-              "TargetGroupArn": {
-                "Ref": "TargetGroup"
-              }
-            }
-          ],
-          "LoadBalancerArn": {
-            "Ref": "ALB"
-          },
-          "Port": 80,
-          "Protocol": "HTTP"
-        }
+          "Type": "AWS::ElasticLoadBalancingV2::Listener",
+          "Properties": {
+              "DefaultActions": [
+                  {
+                      "Type": "forward",
+                      "TargetGroupArn": {
+                          "Ref": "TargetGroup"
+                      }
+                  }
+              ],
+              "LoadBalancerArn": {
+                  "Ref": "ALB"
+              },
+              "Port": 80,
+              "Protocol": "HTTP"
+          }
       },
       "TargetGroup": {
-        "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
-        "Properties": {
-          "Name": "MyTargetGroup",
-          "Port": 80,
-          "Protocol": "HTTP",
-          "TargetType": "ip",
-          "VpcId": {
-            "Fn::ImportValue": {
-              "Fn::Sub": "${VpcStackName}-VPCID"
-            }
-          },
-          "HealthCheckEnabled": true,
-          "HealthCheckPath": "/health",
-          "HealthCheckIntervalSeconds": 30,
-          "HealthCheckTimeoutSeconds": 5,
-          "HealthyThresholdCount": 2,
-          "UnhealthyThresholdCount": 2
-        }
+          "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+          "Properties": {
+              "Name": "MyTargetGroup",
+              "Port": 80,
+              "Protocol": "HTTP",
+              "TargetType": "ip",
+              "VpcId": {
+                  "Fn::ImportValue": {
+                      "Fn::Sub": "${VpcStackName}-VPCID"
+                  }
+              },
+              "HealthCheckEnabled": true,
+              "HealthCheckPath": "/HealthCheck",
+              "HealthCheckIntervalSeconds": 30,
+              "HealthCheckTimeoutSeconds": 5,
+              "HealthyThresholdCount": 2,
+              "UnhealthyThresholdCount": 2
+          }
       }
-    }
   }
-  
+}
