@@ -4,11 +4,11 @@
     "Parameters": {
       "ECSClusterName": {
         "Type": "String",
-        "Default": "estudo-dev-cluster"
+        "Default": "estudo-dev-cluster2"
       },
       "ECSServiceName": {
         "Type": "String",
-        "Default": "estudo-dev-app-game"
+        "Default": "estudo-dev-app-game5"
       },
       "SecurityGroupIDs": {
         "Type": "CommaDelimitedList",
@@ -24,7 +24,7 @@
       },
       "LoadBalancerName": {
         "Type": "String",
-        "Default": "estudo-dev-alb"
+        "Default": "estudo-dev-alb5"
       }
     },
     "Resources": {
@@ -34,12 +34,12 @@
           "Cluster": "estudo-dev-cluster",
           "TaskDefinition": "arn:aws:ecs:us-east-1:791918029132:task-definition/estudo-dev-app-game:6",
           "LaunchType": "FARGATE",
-          "ServiceName": "estudo-dev-app-game",
+          "ServiceName": "estudo-dev-app-game5",
           "SchedulingStrategy": "REPLICA",
           "DesiredCount": 1,
           "LoadBalancers": [
             {
-              "ContainerName": "app-game",
+              "ContainerName": "app-game5",
               "ContainerPort": 80,
               "LoadBalancerName": {
                 "Ref": "AWS::NoValue"

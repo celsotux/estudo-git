@@ -4,11 +4,11 @@
     "Parameters": {
       "ECSClusterName": {
         "Type": "String",
-        "Default": "estudo-dev-cluster"
+        "Default": "estudo-dev-cluster1"
       },
       "ECSServiceName": {
         "Type": "String",
-        "Default": "estudo-dev-app-game"
+        "Default": "estudo-dev-app-game3"
       },
       "SecurityGroupIDs": {
         "Type": "CommaDelimitedList",
@@ -24,22 +24,22 @@
       },
       "LoadBalancerName": {
         "Type": "String",
-        "Default": "estudo-dev-alb"
+        "Default": "estudo-dev-alb3"
       }
     },
     "Resources": {
       "ECSService": {
         "Type": "AWS::ECS::Service",
         "Properties": {
-          "Cluster": "estudo-dev-cluster",
+          "Cluster": "estudo-dev-cluster1",
           "TaskDefinition": "arn:aws:ecs:us-east-1:791918029132:task-definition/estudo-dev-app-game:6",
           "LaunchType": "FARGATE",
-          "ServiceName": "estudo-dev-app-game",
+          "ServiceName": "estudo-dev-app-game3",
           "SchedulingStrategy": "REPLICA",
           "DesiredCount": 1,
           "LoadBalancers": [
             {
-              "ContainerName": "app-game",
+              "ContainerName": "app-game3",
               "ContainerPort": 80,
               "LoadBalancerName": {
                 "Ref": "AWS::NoValue"
