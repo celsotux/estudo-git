@@ -14,14 +14,14 @@
             "Type": "String",
             "Description": "The short name of the cluster on which to run your service.",
             "AllowedValues": [
-                "estudo-dev-cluster"
+                "estudo-dev-cluster1"
             ],
-            "Default": "estudo-dev-cluster"
+            "Default": "estudo-dev-cluster1"
         },
         "ServiceName": {
             "Type": "String",
             "Description": "The name of your service. Up to 255 letters (uppercase and lowercase), numbers, and hyphens are allowed.",
-            "Default": "app-game2"
+            "Default": "app-game1"
         },
         "DesiredCount": {
             "Type": "Number",
