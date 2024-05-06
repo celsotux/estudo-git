@@ -1,4 +1,4 @@
-name: 4-Deploy IMAGE app30 to ECR infra
+name: 4-Deploy IMAGE app40 to ECR infra
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ jobs:
       REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-      IMAGE_NAME: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.REPOSITORY_NAME }}:hit-game-app30
+      IMAGE_NAME: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.REPOSITORY_NAME }}:hit-game-app40
 
     steps:
       - name: Checkout
@@ -31,11 +31,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t hit-game-app30 ./app
+          docker build -t hit-game-app40 ./app
 
       - name: Tag Docker image
         run: |
-          docker tag hit-game-app30:latest $IMAGE_NAME
+          docker tag hit-game-app40:latest $IMAGE_NAME
 
       - name: Push Docker image to ECR
         run: | 
