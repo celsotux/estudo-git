@@ -4,7 +4,7 @@
     "Parameters": {
         "LoadBalancerName": {
             "Type": "String",
-            "Default": "alb5"
+            "Default": "alb10"
         },
         "Environment": {
             "Type": "String",
