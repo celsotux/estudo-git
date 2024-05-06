@@ -1,4 +1,4 @@
-name: 3-Deploy ALB40 infra
+name: 3-Deploy ALB50 infra
 
 on:
   workflow_dispatch:
@@ -21,8 +21,8 @@ jobs:
       - name: Deploy Stack
         run: |
           aws cloudformation create-stack \
-            --stack-name estudo-alb40 \
-            --template-body file://./cloudformation/environment/FARGATE/alb/estudo-alb40.json \
+            --stack-name estudo-alb50 \
+            --template-body file://./cloudformation/environment/FARGATE/alb/estudo-alb50.json \
             --capabilities CAPABILITY_IAM
 
-          aws cloudformation wait stack-create-complete --stack-name estudo-alb40
+          aws cloudformation wait stack-create-complete --stack-name estudo-alb50
