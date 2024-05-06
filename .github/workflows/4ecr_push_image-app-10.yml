@@ -1,4 +1,4 @@
-name: 4-Deploy IMAGE to ECR infra
+name: 4-Deploy IMAGE app10 to ECR infra
 
 on:
   workflow_dispatch:
@@ -31,11 +31,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t hit-game-app ./app
+          docker build -t hit-game-app10 ./app
 
       - name: Tag Docker image
         run: |
-          docker tag hit-game-app:latest $IMAGE_NAME
+          docker tag hit-game-app10:latest $IMAGE_NAME
 
       - name: Push Docker image to ECR
         run: | 
