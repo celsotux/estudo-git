@@ -404,10 +404,10 @@
                                     "Fn::Sub": "curl -f http://localhost:${ContainerPort}${HealthCheckPath} || exit 1"
                                 }
                             ],
-                            "Interval": 0,
-                            "Retries": 0,
-                            "StartPeriod": 0,
-                            "Timeout": 0
+                            "Interval": 60,
+                            "Retries": 3,
+                            "StartPeriod": 120,
+                            "Timeout": 30
                         },
                         "Essential": "true",
                         "LogConfiguration": {
