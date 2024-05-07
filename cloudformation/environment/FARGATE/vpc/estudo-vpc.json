@@ -1,937 +1,935 @@
 {
-  "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "VPC Template",
-  "Parameters": {
-      "Environment": {
-          "Type": "String",
-          "Default": "estudo"
-          
-      },
-      "CidrBlock": {
-          "Type": "String",
-          "Default": "10.5.0.0/16"
-          
-      }
-  },
-  "Metadata": {
-      "AWS::CloudFormation::Interface": {
-          "ParameterGroups": [
-              {
-                  "Label": {
-                      "default": "Main Configuration"
-                  },
-                  "Parameters": [
-                      "Environment"
-                  ]
-              },
-              {
-                  "Label": {
-                      "default": "VPC Configuration"
-                  },
-                  "Parameters": [
-                      "CidrBlock"
-                    ]
-              }
-          ],
-          "ParameterLabels": {
-              "Environment": {
-                  "default": "Environment Type"
-              }
-          }
-      }
-  },
-  "Mappings": {
-      "EnvironmentMap": {
-          "estudo": {
-              "Prefix": "estudo"
-          }
-      },
-      "DomainMap": {
-          "dev": {
-              "Prefix": "dev",
-              "AccountId": "791918029132"
-          }
-      },
-      "AccountMap": {
-          "791918029132": {
-              "Prefix": "dev",
-              "Name": "estudo"
-          }
-      }
-  },
-  "Resources": {
-      "VPC": {
-          "Type": "AWS::EC2::VPC",
-          "Properties": {
-              "CidrBlock": {
-                  "Ref": "CidrBlock"
-              },
-              "EnableDnsSupport": "true",
-              "EnableDnsHostnames": "true",
-              "InstanceTenancy": "default",
-              "Tags": [
-                  {
-                      "Key": "Name",
-                      "Value": {
-                          "Fn::Sub": [
-                              "${Arg1}-${Arg2}-vpc",
-                              {
-                                  "Arg1": {
-                                      "Fn::FindInMap": [
-                                          "EnvironmentMap",
-                                          {
-                                              "Ref": "Environment"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  },
-                                  "Arg2": {
-                                      "Fn::FindInMap": [
-                                          "AccountMap",
-                                          {
-                                              "Ref": "AWS::AccountId"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "Key": "Environment",
-                      "Value": {
-                          "Ref": "Environment"
-                      }
-                  },
-                  {
-                      "Key": "Domain",
-                      "Value": {
-                          "Fn::FindInMap": [
-                              "AccountMap",
-                              {
-                                  "Ref": "AWS::AccountId"
-                              },
-                              "Name"
-                          ]
-                      }
-                  }
-              ]
-          }
-      },
-      "PublicSubnet1": {
-          "Type": "AWS::EC2::Subnet",
-          "Properties": {
-              "AvailabilityZone": {
-                  "Fn::Sub": "${AWS::Region}a"
-              },
-              "CidrBlock": {
-                  "Fn::Select": [
-                      1,
-                      {
-                          "Fn::Cidr": [
-                              {
-                                  "Fn::GetAtt": [
-                                      "VPC",
-                                      "CidrBlock"
-                                  ]
-                              },
-                              5,
-                              8
-                          ]
-                      }
-                  ]
-              },
-              "VpcId": {
-                  "Ref": "VPC"
-              },
-              "Tags": [
-                  {
-                      "Key": "Name",
-                      "Value": {
-                          "Fn::Sub": [
-                              "${Arg1}-${Arg2}-public-subnet-1-a",
-                              {
-                                  "Arg1": {
-                                      "Fn::FindInMap": [
-                                          "EnvironmentMap",
-                                          {
-                                              "Ref": "Environment"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  },
-                                  "Arg2": {
-                                      "Fn::FindInMap": [
-                                          "AccountMap",
-                                          {
-                                              "Ref": "AWS::AccountId"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "Key": "Environment",
-                      "Value": {
-                          "Ref": "Environment"
-                      }
-                  },
-                  {
-                      "Key": "Domain",
-                      "Value": {
-                          "Fn::FindInMap": [
-                              "AccountMap",
-                              {
-                                  "Ref": "AWS::AccountId"
-                              },
-                              "Name"
-                          ]
-                      }
-                  }
-              ]
-          }
-      },
-      "PublicSubnet2": {
-          "Type": "AWS::EC2::Subnet",
-          "Properties": {
-              "AvailabilityZone": {
-                  "Fn::Sub": "${AWS::Region}c"
-              },
-              "CidrBlock": {
-                  "Fn::Select": [
-                      2,
-                      {
-                          "Fn::Cidr": [
-                              {
-                                  "Fn::GetAtt": [
-                                      "VPC",
-                                      "CidrBlock"
-                                  ]
-                              },
-                              5,
-                              8
-                          ]
-                      }
-                  ]
-              },
-              "VpcId": {
-                  "Ref": "VPC"
-              },
-              "Tags": [
-                  {
-                      "Key": "Name",
-                      "Value": {
-                          "Fn::Sub": [
-                              "${Arg1}-${Arg2}-public-subnet-2-c",
-                              {
-                                  "Arg1": {
-                                      "Fn::FindInMap": [
-                                          "EnvironmentMap",
-                                          {
-                                              "Ref": "Environment"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  },
-                                  "Arg2": {
-                                      "Fn::FindInMap": [
-                                          "AccountMap",
-                                          {
-                                              "Ref": "AWS::AccountId"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "Key": "Environment",
-                      "Value": {
-                          "Ref": "Environment"
-                      }
-                  },
-                  {
-                      "Key": "Domain",
-                      "Value": {
-                          "Fn::FindInMap": [
-                              "AccountMap",
-                              {
-                                  "Ref": "AWS::AccountId"
-                              },
-                              "Name"
-                          ]
-                      }
-                  }
-              ]
-          }
-      },
-      "PrivateSubnet1": {
-          "Type": "AWS::EC2::Subnet",
-          "Properties": {
-              "AvailabilityZone": {
-                  "Fn::Sub": "${AWS::Region}a"
-              },
-              "CidrBlock": {
-                  "Fn::Select": [
-                      3,
-                      {
-                          "Fn::Cidr": [
-                              {
-                                  "Fn::GetAtt": [
-                                      "VPC",
-                                      "CidrBlock"
-                                  ]
-                              },
-                              5,
-                              8
-                          ]
-                      }
-                  ]
-              },
-              "VpcId": {
-                  "Ref": "VPC"
-              },
-              "Tags": [
-                  {
-                      "Key": "Name",
-                      "Value": {
-                          "Fn::Sub": [
-                              "${Arg1}-${Arg2}-private-subnet-1-a",
-                              {
-                                  "Arg1": {
-                                      "Fn::FindInMap": [
-                                          "EnvironmentMap",
-                                          {
-                                              "Ref": "Environment"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  },
-                                  "Arg2": {
-                                      "Fn::FindInMap": [
-                                          "AccountMap",
-                                          {
-                                              "Ref": "AWS::AccountId"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "Key": "Environment",
-                      "Value": {
-                          "Ref": "Environment"
-                      }
-                  },
-                  {
-                      "Key": "Domain",
-                      "Value": {
-                          "Fn::FindInMap": [
-                              "AccountMap",
-                              {
-                                  "Ref": "AWS::AccountId"
-                              },
-                              "Name"
-                          ]
-                      }
-                  }
-              ]
-          }
-      },
-      "PrivateSubnet2": {
-          "Type": "AWS::EC2::Subnet",
-          "Properties": {
-              "AvailabilityZone": {
-                  "Fn::Sub": "${AWS::Region}c"
-              },
-              "CidrBlock": {
-                  "Fn::Select": [
-                      4,
-                      {
-                          "Fn::Cidr": [
-                              {
-                                  "Fn::GetAtt": [
-                                      "VPC",
-                                      "CidrBlock"
-                                  ]
-                              },
-                              5,
-                              8
-                          ]
-                      }
-                  ]
-              },
-              "VpcId": {
-                  "Ref": "VPC"
-              },
-              "Tags": [
-                  {
-                      "Key": "Name",
-                      "Value": {
-                          "Fn::Sub": [
-                              "${Arg1}-${Arg2}-private-subnet-2-c",
-                              {
-                                  "Arg1": {
-                                      "Fn::FindInMap": [
-                                          "EnvironmentMap",
-                                          {
-                                              "Ref": "Environment"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  },
-                                  "Arg2": {
-                                      "Fn::FindInMap": [
-                                          "AccountMap",
-                                          {
-                                              "Ref": "AWS::AccountId"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "Key": "Environment",
-                      "Value": {
-                          "Ref": "Environment"
-                      }
-                  },
-                  {
-                      "Key": "Domain",
-                      "Value": {
-                          "Fn::FindInMap": [
-                              "AccountMap",
-                              {
-                                  "Ref": "AWS::AccountId"
-                              },
-                              "Name"
-                          ]
-                      }
-                  }
-              ]
-          }
-      },
-      "InternetGateway": {
-          "DependsOn": [
-              "VPC"
-          ],
-          "Type": "AWS::EC2::InternetGateway",
-          "Properties": {
-              "Tags": [
-                  {
-                      "Key": "Name",
-                      "Value": {
-                          "Fn::Sub": [
-                              "${Arg1}-${Arg2}-internet-gateway",
-                              {
-                                  "Arg1": {
-                                      "Fn::FindInMap": [
-                                          "EnvironmentMap",
-                                          {
-                                              "Ref": "Environment"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  },
-                                  "Arg2": {
-                                      "Fn::FindInMap": [
-                                          "AccountMap",
-                                          {
-                                              "Ref": "AWS::AccountId"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "Key": "Environment",
-                      "Value": {
-                          "Ref": "Environment"
-                      }
-                  },
-                  {
-                      "Key": "Domain",
-                      "Value": {
-                          "Fn::FindInMap": [
-                              "AccountMap",
-                              {
-                                  "Ref": "AWS::AccountId"
-                              },
-                              "Name"
-                          ]
-                      }
-                  }
-              ]
-          }
-      },
-      "AttachGateway": {
-          "DependsOn": [
-              "VPC",
-              "InternetGateway"
-          ],
-          "Type": "AWS::EC2::VPCGatewayAttachment",
-          "Properties": {
-              "VpcId": {
-                  "Ref": "VPC"
-              },
-              "InternetGatewayId": {
-                  "Ref": "InternetGateway"
-              }
-          }
-      },
-      "ElasticIp": {
-          "DependsOn": [
-              "VPC",
-              "AttachGateway"
-          ],
-          "Type": "AWS::EC2::EIP",
-          "Properties": {
-              "Domain": "vpc",
-              "Tags": [
-                  {
-                      "Key": "Name",
-                      "Value": {
-                          "Fn::Sub": [
-                              "${Arg1}-${Arg2}-eip-nat-gateway",
-                              {
-                                  "Arg1": {
-                                      "Fn::FindInMap": [
-                                          "EnvironmentMap",
-                                          {
-                                              "Ref": "Environment"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  },
-                                  "Arg2": {
-                                      "Fn::FindInMap": [
-                                          "AccountMap",
-                                          {
-                                              "Ref": "AWS::AccountId"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "Key": "Environment",
-                      "Value": {
-                          "Ref": "Environment"
-                      }
-                  },
-                  {
-                      "Key": "Domain",
-                      "Value": {
-                          "Fn::FindInMap": [
-                              "AccountMap",
-                              {
-                                  "Ref": "AWS::AccountId"
-                              },
-                              "Name"
-                          ]
-                      }
-                  }
-              ]
-          }
-      },
-      "NatGateway": {
-          "DependsOn": [
-              "ElasticIp",
-              "PublicSubnet1"
-          ],
-          "Type": "AWS::EC2::NatGateway",
-          "Properties": {
-              "AllocationId": {
-                  "Fn::GetAtt": [
-                      "ElasticIp",
-                      "AllocationId"
-                  ]
-              },
-              "SubnetId": {
-                  "Ref": "PublicSubnet1"
-              },
-              "Tags": [
-                  {
-                      "Key": "Name",
-                      "Value": {
-                          "Fn::Sub": [
-                              "${Arg1}-${Arg2}-nat-gateway",
-                              {
-                                  "Arg1": {
-                                      "Fn::FindInMap": [
-                                          "EnvironmentMap",
-                                          {
-                                              "Ref": "Environment"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  },
-                                  "Arg2": {
-                                      "Fn::FindInMap": [
-                                          "AccountMap",
-                                          {
-                                              "Ref": "AWS::AccountId"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "Key": "Environment",
-                      "Value": {
-                          "Ref": "Environment"
-                      }
-                  },
-                  {
-                      "Key": "Domain",
-                      "Value": {
-                          "Fn::FindInMap": [
-                              "AccountMap",
-                              {
-                                  "Ref": "AWS::AccountId"
-                              },
-                              "Name"
-                          ]
-                      }
-                  }
-              ]
-          }
-      },
-      "PublicRouteTable": {
-          "DependsOn": [
-              "VPC"
-          ],
-          "Type": "AWS::EC2::RouteTable",
-          "Properties": {
-              "VpcId": {
-                  "Ref": "VPC"
-              },
-              "Tags": [
-                  {
-                      "Key": "Name",
-                      "Value": {
-                          "Fn::Sub": [
-                              "${Arg1}-${Arg2}-rtb-public",
-                              {
-                                  "Arg1": {
-                                      "Fn::FindInMap": [
-                                          "EnvironmentMap",
-                                          {
-                                              "Ref": "Environment"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  },
-                                  "Arg2": {
-                                      "Fn::FindInMap": [
-                                          "AccountMap",
-                                          {
-                                              "Ref": "AWS::AccountId"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "Key": "Environment",
-                      "Value": {
-                          "Ref": "Environment"
-                      }
-                  },
-                  {
-                      "Key": "Domain",
-                      "Value": {
-                          "Fn::FindInMap": [
-                              "AccountMap",
-                              {
-                                  "Ref": "AWS::AccountId"
-                              },
-                              "Name"
-                          ]
-                      }
-                  }
-              ]
-          }
-      },
-      "PrivateRouteTable": {
-          "DependsOn": [
-              "VPC"
-          ],
-          "Type": "AWS::EC2::RouteTable",
-          "Properties": {
-              "VpcId": {
-                  "Ref": "VPC"
-              },
-              "Tags": [
-                  {
-                      "Key": "Name",
-                      "Value": {
-                          "Fn::Sub": [
-                              "${Arg1}-${Arg2}-rtb-private",
-                              {
-                                  "Arg1": {
-                                      "Fn::FindInMap": [
-                                          "EnvironmentMap",
-                                          {
-                                              "Ref": "Environment"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  },
-                                  "Arg2": {
-                                      "Fn::FindInMap": [
-                                          "AccountMap",
-                                          {
-                                              "Ref": "AWS::AccountId"
-                                          },
-                                          "Prefix"
-                                      ]
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "Key": "Environment",
-                      "Value": {
-                          "Ref": "Environment"
-                      }
-                  },
-                  {
-                      "Key": "Domain",
-                      "Value": {
-                          "Fn::FindInMap": [
-                              "AccountMap",
-                              {
-                                  "Ref": "AWS::AccountId"
-                              },
-                              "Name"
-                          ]
-                      }
-                  }
-              ]
-          }
-      },
-      "InternetGatewayRoute": {
-          "DependsOn": [
-              "PublicRouteTable",
-              "InternetGateway",
-              "AttachGateway"
-          ],
-          "Type": "AWS::EC2::Route",
-          "Properties": {
-              "RouteTableId": {
-                  "Ref": "PublicRouteTable"
-              },
-              "DestinationCidrBlock": "0.0.0.0/0",
-              "GatewayId": {
-                  "Ref": "InternetGateway"
-              }
-          }
-      },
-      "NatGatewayRoute": {
-          "DependsOn": [
-              "PrivateRouteTable",
-              "NatGateway"
-          ],
-          "Type": "AWS::EC2::Route",
-          "Properties": {
-              "RouteTableId": {
-                  "Ref": "PrivateRouteTable"
-              },
-              "DestinationCidrBlock": "0.0.0.0/0",
-              "NatGatewayId": {
-                  "Ref": "NatGateway"
-              }
-          }
-      },
-      "PublicSubnet1RouteTableAssociation": {
-          "DependsOn": [
-              "PublicSubnet1",
-              "PublicRouteTable"
-          ],
-          "Type": "AWS::EC2::SubnetRouteTableAssociation",
-          "Properties": {
-              "SubnetId": {
-                  "Ref": "PublicSubnet1"
-              },
-              "RouteTableId": {
-                  "Ref": "PublicRouteTable"
-              }
-          }
-      },
-      "PublicSubnet2RouteTableAssociation": {
-          "DependsOn": [
-              "PublicSubnet2",
-              "PublicRouteTable"
-          ],
-          "Type": "AWS::EC2::SubnetRouteTableAssociation",
-          "Properties": {
-              "SubnetId": {
-                  "Ref": "PublicSubnet2"
-              },
-              "RouteTableId": {
-                  "Ref": "PublicRouteTable"
-              }
-          }
-      },
-      "PrivateSubnet1RouteTableAssociation": {
-          "DependsOn": [
-              "PrivateSubnet1",
-              "PrivateRouteTable"
-          ],
-          "Type": "AWS::EC2::SubnetRouteTableAssociation",
-          "Properties": {
-              "SubnetId": {
-                  "Ref": "PrivateSubnet1"
-              },
-              "RouteTableId": {
-                  "Ref": "PrivateRouteTable"
-              }
-          }
-      },
-      "PrivateSubnet2RouteTableAssociation": {
-          "DependsOn": [
-              "PrivateSubnet2",
-              "PrivateRouteTable"
-          ],
-          "Type": "AWS::EC2::SubnetRouteTableAssociation",
-          "Properties": {
-              "SubnetId": {
-                  "Ref": "PrivateSubnet2"
-              },
-              "RouteTableId": {
-                  "Ref": "PrivateRouteTable"
-              }
-          }
-      }
-  },
-  "Outputs": {
-      "VpcId": {
-          "Description": "The VPC id.",
-          "Value": {
-              "Ref": "VPC"
-          },
-          "Export": {
-              "Name": {
-                  "Fn::Sub": "${AWS::StackName}-VpcId"
-              }
-          }
-      },
-      "VpcName": {
-          "Description": "VPC Name.",
-          "Value": {
-              "Fn::Sub": [
-                  "${Arg1}-${Arg2}-vpc",
-                  {
-                      "Arg1": {
-                          "Fn::FindInMap": [
-                              "EnvironmentMap",
-                              {
-                                  "Ref": "Environment"
-                              },
-                              "Prefix"
-                          ]
-                      },
-                      "Arg2": {
-                          "Fn::FindInMap": [
-                              "AccountMap",
-                              {
-                                  "Ref": "AWS::AccountId"
-                              },
-                              "Prefix"
-                          ]
-                      }
-                  }
-              ]
-          },
-          "Export": {
-              "Name": {
-                  "Fn::Sub": "${AWS::StackName}-Name"
-              }
-          }
-      },
-      "VpcCidrBlock": {
-          "Description": "VPC CIDR Block.",
-          "Value": {
-              "Fn::GetAtt": [
-                  "VPC",
-                  "CidrBlock"
-              ]
-          },
-          "Export": {
-              "Name": {
-                  "Fn::Sub": "${AWS::StackName}-VpcCidrBlock"
-              }
-          }
-      },
-      "PublicSubnet1": {
-          "Description": "Public subnet 1 (ARN).",
-          "Value": {
-              "Ref": "PublicSubnet1"
-          },
-          "Export": {
-              "Name": {
-                  "Fn::Sub": "${AWS::StackName}-PublicSubnet1"
-              }
-          }
-      },
-      "PublicSubnet2": {
-          "Description": "Public subnet 2 (ARN).",
-          "Value": {
-              "Ref": "PublicSubnet2"
-          },
-          "Export": {
-              "Name": {
-                  "Fn::Sub": "${AWS::StackName}-PublicSubnet2"
-              }
-          }
-      },
-      "PrivateSubnet1": {
-          "Description": "Private subnet 1 (ARN).",
-          "Value": {
-              "Ref": "PrivateSubnet1"
-          },
-          "Export": {
-              "Name": {
-                  "Fn::Sub": "${AWS::StackName}-PrivateSubnet1"
-              }
-          }
-      },
-      "PrivateSubnet2": {
-          "Description": "Private subnet 2 (ARN).",
-          "Value": {
-              "Ref": "PrivateSubnet2"
-          },
-          "Export": {
-              "Name": {
-                  "Fn::Sub": "${AWS::StackName}-PrivateSubnet2"
-              }
-          }
-      }
-  }
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Description": "VPC Template",
+	"Parameters": {
+		"Environment": {
+			"Type": "String",
+			"Default": "estudo"
+		},
+		"CidrBlock": {
+			"Type": "String",
+			"Default": "10.5.0.0/16"
+		}
+	},
+	"Metadata": {
+		"AWS::CloudFormation::Interface": {
+			"ParameterGroups": [
+				{
+					"Label": {
+						"default": "Main Configuration"
+					},
+					"Parameters": [
+						"Environment"
+					]
+				},
+				{
+					"Label": {
+						"default": "VPC Configuration"
+					},
+					"Parameters": [
+						"CidrBlock"
+					]
+				}
+			],
+			"ParameterLabels": {
+				"Environment": {
+					"default": "Environment Type"
+				}
+			}
+		}
+	},
+	"Mappings": {
+		"EnvironmentMap": {
+			"estudo": {
+				"Prefix": "estudo"
+			}
+		},
+		"DomainMap": {
+			"dev": {
+				"Prefix": "dev",
+				"AccountId": "791918029132"
+			}
+		},
+		"AccountMap": {
+			"791918029132": {
+				"Prefix": "dev",
+				"Name": "estudo"
+			}
+		}
+	},
+	"Resources": {
+		"VPC": {
+			"Type": "AWS::EC2::VPC",
+			"Properties": {
+				"CidrBlock": {
+					"Ref": "CidrBlock"
+				},
+				"EnableDnsSupport": "true",
+				"EnableDnsHostnames": "true",
+				"InstanceTenancy": "default",
+				"Tags": [
+					{
+						"Key": "Name",
+						"Value": {
+							"Fn::Sub": [
+								"${Arg1}-${Arg2}-vpc",
+								{
+									"Arg1": {
+										"Fn::FindInMap": [
+											"EnvironmentMap",
+											{
+												"Ref": "Environment"
+											},
+											"Prefix"
+										]
+									},
+									"Arg2": {
+										"Fn::FindInMap": [
+											"AccountMap",
+											{
+												"Ref": "AWS::AccountId"
+											},
+											"Prefix"
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						"Key": "Environment",
+						"Value": {
+							"Ref": "Environment"
+						}
+					},
+					{
+						"Key": "Domain",
+						"Value": {
+							"Fn::FindInMap": [
+								"AccountMap",
+								{
+									"Ref": "AWS::AccountId"
+								},
+								"Name"
+							]
+						}
+					}
+				]
+			}
+		},
+		"PublicSubnet1": {
+			"Type": "AWS::EC2::Subnet",
+			"Properties": {
+				"AvailabilityZone": {
+					"Fn::Sub": "${AWS::Region}a"
+				},
+				"CidrBlock": {
+					"Fn::Select": [
+						1,
+						{
+							"Fn::Cidr": [
+								{
+									"Fn::GetAtt": [
+										"VPC",
+										"CidrBlock"
+									]
+								},
+								5,
+								8
+							]
+						}
+					]
+				},
+				"VpcId": {
+					"Ref": "VPC"
+				},
+				"Tags": [
+					{
+						"Key": "Name",
+						"Value": {
+							"Fn::Sub": [
+								"${Arg1}-${Arg2}-public-subnet-1-a",
+								{
+									"Arg1": {
+										"Fn::FindInMap": [
+											"EnvironmentMap",
+											{
+												"Ref": "Environment"
+											},
+											"Prefix"
+										]
+									},
+									"Arg2": {
+										"Fn::FindInMap": [
+											"AccountMap",
+											{
+												"Ref": "AWS::AccountId"
+											},
+											"Prefix"
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						"Key": "Environment",
+						"Value": {
+							"Ref": "Environment"
+						}
+					},
+					{
+						"Key": "Domain",
+						"Value": {
+							"Fn::FindInMap": [
+								"AccountMap",
+								{
+									"Ref": "AWS::AccountId"
+								},
+								"Name"
+							]
+						}
+					}
+				]
+			}
+		},
+		"PublicSubnet2": {
+			"Type": "AWS::EC2::Subnet",
+			"Properties": {
+				"AvailabilityZone": {
+					"Fn::Sub": "${AWS::Region}c"
+				},
+				"CidrBlock": {
+					"Fn::Select": [
+						2,
+						{
+							"Fn::Cidr": [
+								{
+									"Fn::GetAtt": [
+										"VPC",
+										"CidrBlock"
+									]
+								},
+								5,
+								8
+							]
+						}
+					]
+				},
+				"VpcId": {
+					"Ref": "VPC"
+				},
+				"Tags": [
+					{
+						"Key": "Name",
+						"Value": {
+							"Fn::Sub": [
+								"${Arg1}-${Arg2}-public-subnet-2-c",
+								{
+									"Arg1": {
+										"Fn::FindInMap": [
+											"EnvironmentMap",
+											{
+												"Ref": "Environment"
+											},
+											"Prefix"
+										]
+									},
+									"Arg2": {
+										"Fn::FindInMap": [
+											"AccountMap",
+											{
+												"Ref": "AWS::AccountId"
+											},
+											"Prefix"
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						"Key": "Environment",
+						"Value": {
+							"Ref": "Environment"
+						}
+					},
+					{
+						"Key": "Domain",
+						"Value": {
+							"Fn::FindInMap": [
+								"AccountMap",
+								{
+									"Ref": "AWS::AccountId"
+								},
+								"Name"
+							]
+						}
+					}
+				]
+			}
+		},
+		"PrivateSubnet1": {
+			"Type": "AWS::EC2::Subnet",
+			"Properties": {
+				"AvailabilityZone": {
+					"Fn::Sub": "${AWS::Region}a"
+				},
+				"CidrBlock": {
+					"Fn::Select": [
+						3,
+						{
+							"Fn::Cidr": [
+								{
+									"Fn::GetAtt": [
+										"VPC",
+										"CidrBlock"
+									]
+								},
+								5,
+								8
+							]
+						}
+					]
+				},
+				"VpcId": {
+					"Ref": "VPC"
+				},
+				"Tags": [
+					{
+						"Key": "Name",
+						"Value": {
+							"Fn::Sub": [
+								"${Arg1}-${Arg2}-private-subnet-1-a",
+								{
+									"Arg1": {
+										"Fn::FindInMap": [
+											"EnvironmentMap",
+											{
+												"Ref": "Environment"
+											},
+											"Prefix"
+										]
+									},
+									"Arg2": {
+										"Fn::FindInMap": [
+											"AccountMap",
+											{
+												"Ref": "AWS::AccountId"
+											},
+											"Prefix"
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						"Key": "Environment",
+						"Value": {
+							"Ref": "Environment"
+						}
+					},
+					{
+						"Key": "Domain",
+						"Value": {
+							"Fn::FindInMap": [
+								"AccountMap",
+								{
+									"Ref": "AWS::AccountId"
+								},
+								"Name"
+							]
+						}
+					}
+				]
+			}
+		},
+		"PrivateSubnet2": {
+			"Type": "AWS::EC2::Subnet",
+			"Properties": {
+				"AvailabilityZone": {
+					"Fn::Sub": "${AWS::Region}c"
+				},
+				"CidrBlock": {
+					"Fn::Select": [
+						4,
+						{
+							"Fn::Cidr": [
+								{
+									"Fn::GetAtt": [
+										"VPC",
+										"CidrBlock"
+									]
+								},
+								5,
+								8
+							]
+						}
+					]
+				},
+				"VpcId": {
+					"Ref": "VPC"
+				},
+				"Tags": [
+					{
+						"Key": "Name",
+						"Value": {
+							"Fn::Sub": [
+								"${Arg1}-${Arg2}-private-subnet-2-c",
+								{
+									"Arg1": {
+										"Fn::FindInMap": [
+											"EnvironmentMap",
+											{
+												"Ref": "Environment"
+											},
+											"Prefix"
+										]
+									},
+									"Arg2": {
+										"Fn::FindInMap": [
+											"AccountMap",
+											{
+												"Ref": "AWS::AccountId"
+											},
+											"Prefix"
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						"Key": "Environment",
+						"Value": {
+							"Ref": "Environment"
+						}
+					},
+					{
+						"Key": "Domain",
+						"Value": {
+							"Fn::FindInMap": [
+								"AccountMap",
+								{
+									"Ref": "AWS::AccountId"
+								},
+								"Name"
+							]
+						}
+					}
+				]
+			}
+		},
+		"InternetGateway": {
+			"DependsOn": [
+				"VPC"
+			],
+			"Type": "AWS::EC2::InternetGateway",
+			"Properties": {
+				"Tags": [
+					{
+						"Key": "Name",
+						"Value": {
+							"Fn::Sub": [
+								"${Arg1}-${Arg2}-internet-gateway",
+								{
+									"Arg1": {
+										"Fn::FindInMap": [
+											"EnvironmentMap",
+											{
+												"Ref": "Environment"
+											},
+											"Prefix"
+										]
+									},
+									"Arg2": {
+										"Fn::FindInMap": [
+											"AccountMap",
+											{
+												"Ref": "AWS::AccountId"
+											},
+											"Prefix"
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						"Key": "Environment",
+						"Value": {
+							"Ref": "Environment"
+						}
+					},
+					{
+						"Key": "Domain",
+						"Value": {
+							"Fn::FindInMap": [
+								"AccountMap",
+								{
+									"Ref": "AWS::AccountId"
+								},
+								"Name"
+							]
+						}
+					}
+				]
+			}
+		},
+		"AttachGateway": {
+			"DependsOn": [
+				"VPC",
+				"InternetGateway"
+			],
+			"Type": "AWS::EC2::VPCGatewayAttachment",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+				"InternetGatewayId": {
+					"Ref": "InternetGateway"
+				}
+			}
+		},
+		"ElasticIp": {
+			"DependsOn": [
+				"VPC",
+				"AttachGateway"
+			],
+			"Type": "AWS::EC2::EIP",
+			"Properties": {
+				"Domain": "vpc",
+				"Tags": [
+					{
+						"Key": "Name",
+						"Value": {
+							"Fn::Sub": [
+								"${Arg1}-${Arg2}-eip-nat-gateway",
+								{
+									"Arg1": {
+										"Fn::FindInMap": [
+											"EnvironmentMap",
+											{
+												"Ref": "Environment"
+											},
+											"Prefix"
+										]
+									},
+									"Arg2": {
+										"Fn::FindInMap": [
+											"AccountMap",
+											{
+												"Ref": "AWS::AccountId"
+											},
+											"Prefix"
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						"Key": "Environment",
+						"Value": {
+							"Ref": "Environment"
+						}
+					},
+					{
+						"Key": "Domain",
+						"Value": {
+							"Fn::FindInMap": [
+								"AccountMap",
+								{
+									"Ref": "AWS::AccountId"
+								},
+								"Name"
+							]
+						}
+					}
+				]
+			}
+		},
+		"NatGateway": {
+			"DependsOn": [
+				"ElasticIp",
+				"PublicSubnet1"
+			],
+			"Type": "AWS::EC2::NatGateway",
+			"Properties": {
+				"AllocationId": {
+					"Fn::GetAtt": [
+						"ElasticIp",
+						"AllocationId"
+					]
+				},
+				"SubnetId": {
+					"Ref": "PublicSubnet1"
+				},
+				"Tags": [
+					{
+						"Key": "Name",
+						"Value": {
+							"Fn::Sub": [
+								"${Arg1}-${Arg2}-nat-gateway",
+								{
+									"Arg1": {
+										"Fn::FindInMap": [
+											"EnvironmentMap",
+											{
+												"Ref": "Environment"
+											},
+											"Prefix"
+										]
+									},
+									"Arg2": {
+										"Fn::FindInMap": [
+											"AccountMap",
+											{
+												"Ref": "AWS::AccountId"
+											},
+											"Prefix"
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						"Key": "Environment",
+						"Value": {
+							"Ref": "Environment"
+						}
+					},
+					{
+						"Key": "Domain",
+						"Value": {
+							"Fn::FindInMap": [
+								"AccountMap",
+								{
+									"Ref": "AWS::AccountId"
+								},
+								"Name"
+							]
+						}
+					}
+				]
+			}
+		},
+		"PublicRouteTable": {
+			"DependsOn": [
+				"VPC"
+			],
+			"Type": "AWS::EC2::RouteTable",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+				"Tags": [
+					{
+						"Key": "Name",
+						"Value": {
+							"Fn::Sub": [
+								"${Arg1}-${Arg2}-rtb-public",
+								{
+									"Arg1": {
+										"Fn::FindInMap": [
+											"EnvironmentMap",
+											{
+												"Ref": "Environment"
+											},
+											"Prefix"
+										]
+									},
+									"Arg2": {
+										"Fn::FindInMap": [
+											"AccountMap",
+											{
+												"Ref": "AWS::AccountId"
+											},
+											"Prefix"
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						"Key": "Environment",
+						"Value": {
+							"Ref": "Environment"
+						}
+					},
+					{
+						"Key": "Domain",
+						"Value": {
+							"Fn::FindInMap": [
+								"AccountMap",
+								{
+									"Ref": "AWS::AccountId"
+								},
+								"Name"
+							]
+						}
+					}
+				]
+			}
+		},
+		"PrivateRouteTable": {
+			"DependsOn": [
+				"VPC"
+			],
+			"Type": "AWS::EC2::RouteTable",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+				"Tags": [
+					{
+						"Key": "Name",
+						"Value": {
+							"Fn::Sub": [
+								"${Arg1}-${Arg2}-rtb-private",
+								{
+									"Arg1": {
+										"Fn::FindInMap": [
+											"EnvironmentMap",
+											{
+												"Ref": "Environment"
+											},
+											"Prefix"
+										]
+									},
+									"Arg2": {
+										"Fn::FindInMap": [
+											"AccountMap",
+											{
+												"Ref": "AWS::AccountId"
+											},
+											"Prefix"
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						"Key": "Environment",
+						"Value": {
+							"Ref": "Environment"
+						}
+					},
+					{
+						"Key": "Domain",
+						"Value": {
+							"Fn::FindInMap": [
+								"AccountMap",
+								{
+									"Ref": "AWS::AccountId"
+								},
+								"Name"
+							]
+						}
+					}
+				]
+			}
+		},
+		"InternetGatewayRoute": {
+			"DependsOn": [
+				"PublicRouteTable",
+				"InternetGateway",
+				"AttachGateway"
+			],
+			"Type": "AWS::EC2::Route",
+			"Properties": {
+				"RouteTableId": {
+					"Ref": "PublicRouteTable"
+				},
+				"DestinationCidrBlock": "0.0.0.0/0",
+				"GatewayId": {
+					"Ref": "InternetGateway"
+				}
+			}
+		},
+		"NatGatewayRoute": {
+			"DependsOn": [
+				"PrivateRouteTable",
+				"NatGateway"
+			],
+			"Type": "AWS::EC2::Route",
+			"Properties": {
+				"RouteTableId": {
+					"Ref": "PrivateRouteTable"
+				},
+				"DestinationCidrBlock": "0.0.0.0/0",
+				"NatGatewayId": {
+					"Ref": "NatGateway"
+				}
+			}
+		},
+		"PublicSubnet1RouteTableAssociation": {
+			"DependsOn": [
+				"PublicSubnet1",
+				"PublicRouteTable"
+			],
+			"Type": "AWS::EC2::SubnetRouteTableAssociation",
+			"Properties": {
+				"SubnetId": {
+					"Ref": "PublicSubnet1"
+				},
+				"RouteTableId": {
+					"Ref": "PublicRouteTable"
+				}
+			}
+		},
+		"PublicSubnet2RouteTableAssociation": {
+			"DependsOn": [
+				"PublicSubnet2",
+				"PublicRouteTable"
+			],
+			"Type": "AWS::EC2::SubnetRouteTableAssociation",
+			"Properties": {
+				"SubnetId": {
+					"Ref": "PublicSubnet2"
+				},
+				"RouteTableId": {
+					"Ref": "PublicRouteTable"
+				}
+			}
+		},
+		"PrivateSubnet1RouteTableAssociation": {
+			"DependsOn": [
+				"PrivateSubnet1",
+				"PrivateRouteTable"
+			],
+			"Type": "AWS::EC2::SubnetRouteTableAssociation",
+			"Properties": {
+				"SubnetId": {
+					"Ref": "PrivateSubnet1"
+				},
+				"RouteTableId": {
+					"Ref": "PrivateRouteTable"
+				}
+			}
+		},
+		"PrivateSubnet2RouteTableAssociation": {
+			"DependsOn": [
+				"PrivateSubnet2",
+				"PrivateRouteTable"
+			],
+			"Type": "AWS::EC2::SubnetRouteTableAssociation",
+			"Properties": {
+				"SubnetId": {
+					"Ref": "PrivateSubnet2"
+				},
+				"RouteTableId": {
+					"Ref": "PrivateRouteTable"
+				}
+			}
+		}
+	},
+	"Outputs": {
+		"VpcId": {
+			"Description": "The VPC id.",
+			"Value": {
+				"Ref": "VPC"
+			},
+			"Export": {
+				"Name": {
+					"Fn::Sub": "${AWS::StackName}-VpcId"
+				}
+			}
+		},
+		"VpcName": {
+			"Description": "VPC Name.",
+			"Value": {
+				"Fn::Sub": [
+					"${Arg1}-${Arg2}-vpc",
+					{
+						"Arg1": {
+							"Fn::FindInMap": [
+								"EnvironmentMap",
+								{
+									"Ref": "Environment"
+								},
+								"Prefix"
+							]
+						},
+						"Arg2": {
+							"Fn::FindInMap": [
+								"AccountMap",
+								{
+									"Ref": "AWS::AccountId"
+								},
+								"Prefix"
+							]
+						}
+					}
+				]
+			},
+			"Export": {
+				"Name": {
+					"Fn::Sub": "${AWS::StackName}-Name"
+				}
+			}
+		},
+		"VpcCidrBlock": {
+			"Description": "VPC CIDR Block.",
+			"Value": {
+				"Fn::GetAtt": [
+					"VPC",
+					"CidrBlock"
+				]
+			},
+			"Export": {
+				"Name": {
+					"Fn::Sub": "${AWS::StackName}-VpcCidrBlock"
+				}
+			}
+		},
+		"PublicSubnet1": {
+			"Description": "Public subnet 1 (ARN).",
+			"Value": {
+				"Ref": "PublicSubnet1"
+			},
+			"Export": {
+				"Name": {
+					"Fn::Sub": "${AWS::StackName}-PublicSubnet1"
+				}
+			}
+		},
+		"PublicSubnet2": {
+			"Description": "Public subnet 2 (ARN).",
+			"Value": {
+				"Ref": "PublicSubnet2"
+			},
+			"Export": {
+				"Name": {
+					"Fn::Sub": "${AWS::StackName}-PublicSubnet2"
+				}
+			}
+		},
+		"PrivateSubnet1": {
+			"Description": "Private subnet 1 (ARN).",
+			"Value": {
+				"Ref": "PrivateSubnet1"
+			},
+			"Export": {
+				"Name": {
+					"Fn::Sub": "${AWS::StackName}-PrivateSubnet1"
+				}
+			}
+		},
+		"PrivateSubnet2": {
+			"Description": "Private subnet 2 (ARN).",
+			"Value": {
+				"Ref": "PrivateSubnet2"
+			},
+			"Export": {
+				"Name": {
+					"Fn::Sub": "${AWS::StackName}-PrivateSubnet2"
+				}
+			}
+		}
+	}
 }
