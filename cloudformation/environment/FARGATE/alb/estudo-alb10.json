@@ -1,249 +1,249 @@
 {
-    "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Application Load Balancer Template",
-    "Parameters": {
-        "LoadBalancerName": {
-            "Type": "String",
-            "Default": "alb10"
-        },
-        "Environment": {
-            "Type": "String",
-            "Default": "dev"
-        },
-        "VpcStackName": {
-            "Type": "String",
-            "Default": "estudo-vpc"
-        }
-    },
-    "Metadata": {
-        "AWS::CloudFormation::Interface": {
-            "ParameterGroups": [
-                {
-                    "Label": {
-                        "default": "Main Configuration"
-                    },
-                    "Parameters": [
-                        "LoadBalancerName",
-                        "Environment",
-                        "VpcStackName"
-                    ]
-                }
-            ],
-            "ParameterLabels": {
-                "LoadBalancerName": {
-                    "default": "Application Load Balancer Name"
-                },
-                "Environment": {
-                    "default": "Environment Type"
-                },
-                "VpcStackName": {
-                    "default": "estudo-vpc"
-                }
-            }
-        }
-    },
-    "Mappings": {
-        "PrefixMap": {
-            "dev": {
-                "Prefix": "dev"
-            }
-        }
-    },
-    "Resources": {
-        "SecurityGroup": {
-            "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {
-                "GroupDescription": "Access to the public application load balancer (HTTP)",
-                "GroupName": {
-                    "Fn::Sub": [
-                        "estudo-${Prefix}-${LoadBalancerName}-security-group",
-                        {
-                            "Prefix": {
-                                "Fn::FindInMap": [
-                                    "PrefixMap",
-                                    {
-                                        "Ref": "Environment"
-                                    },
-                                    "Prefix"
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "SecurityGroupIngress": [
-                    {
-                        "CidrIp": "0.0.0.0/0",
-                        "FromPort": 80,
-                        "ToPort": 80,
-                        "IpProtocol": "tcp",
-                        "Description": "HTTP Traffic"
-                    }
-                ],
-                "VpcId": {
-                    "Fn::ImportValue": {
-                        "Fn::Sub": "${VpcStackName}-VpcId"
-                    }
-                },
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": {
-                            "Fn::Sub": [
-                                "estudo-${Prefix}-${LoadBalancerName}-security-group",
-                                {
-                                    "Prefix": {
-                                        "Fn::FindInMap": [
-                                            "PrefixMap",
-                                            {
-                                                "Ref": "Environment"
-                                            },
-                                            "Prefix"
-                                        ]
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "Key": "Environment",
-                        "Value": {
-                            "Ref": "Environment"
-                        }
-                    }
-                ]
-            }
-        },
-        "ApplicationLoadBalancer": {
-            "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
-            "Properties": {
-                "Name": {
-                    "Fn::Sub": [
-                        "estudo-${Prefix}-${LoadBalancerName}",
-                        {
-                            "Prefix": {
-                                "Fn::FindInMap": [
-                                    "PrefixMap",
-                                    {
-                                        "Ref": "Environment"
-                                    },
-                                    "Prefix"
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "Scheme": "internet-facing",
-                "IpAddressType": "ipv4",
-                "SecurityGroups": [
-                    {
-                        "Ref": "SecurityGroup"
-                    }
-                ],
-                "Subnets": [
-                    {
-                        "Fn::ImportValue": {
-                            "Fn::Sub": "${VpcStackName}-PublicSubnet1"
-                        }
-                    },
-                    {
-                        "Fn::ImportValue": {
-                            "Fn::Sub": "${VpcStackName}-PublicSubnet2"
-                        }
-                    }
-                ],
-                "Type": "application",
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": {
-                            "Fn::Sub": [
-                                "estudo-${Prefix}-${LoadBalancerName}",
-                                {
-                                    "Prefix": {
-                                        "Fn::FindInMap": [
-                                            "PrefixMap",
-                                            {
-                                                "Ref": "Environment"
-                                            },
-                                            "Prefix"
-                                        ]
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "Key": "Environment",
-                        "Value": {
-                            "Ref": "Environment"
-                        }
-                    }
-                ]
-            }
-        },
-        "HTTPlistener": {
-            "Type": "AWS::ElasticLoadBalancingV2::Listener",
-            "DependsOn": [
-                "ApplicationLoadBalancer"
-            ],
-            "Properties": {
-                "LoadBalancerArn": {
-                    "Ref": "ApplicationLoadBalancer"
-                },
-                "Port": 80,
-                "Protocol": "HTTP",
-                "DefaultActions": [
-                    {
-                        "Type": "fixed-response",
-                        "FixedResponseConfig": {
-                            "StatusCode": "404",
-                            "ContentType": "text/plain",
-                            "MessageBody": "Not found"
-                        }
-                    }
-                ]
-            }
-        }
-    },
-    "Outputs": {
-        "DNSName": {
-            "Description": "The DNS name for the load balancer.",
-            "Value": {
-                "Fn::GetAtt": [
-                    "ApplicationLoadBalancer",
-                    "DNSName"
-                ]
-            },
-            "Export": {
-                "Name": {
-                    "Fn::Sub": "${AWS::StackName}-DNSName"
-                }
-            }
-        },
-        "HostedZoneID": {
-            "Description": "The ID of the Amazon Route 53 hosted zone associated with the load balancer.",
-            "Value": {
-                "Fn::GetAtt": [
-                    "ApplicationLoadBalancer",
-                    "CanonicalHostedZoneID"
-                ]
-            },
-            "Export": {
-                "Name": {
-                    "Fn::Sub": "${AWS::StackName}-HostedZoneID"
-                }
-            }
-        },
-        "ListenerArn": {
-            "Description": "The Amazon Resource Name (ARN) of the listener.",
-            "Value": {
-                "Ref": "HTTPlistener"
-            },
-            "Export": {
-                "Name": {
-                    "Fn::Sub": "${AWS::StackName}-ListenerArn"
-                }
-            }
-        }
-    }
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Description": "Application Load Balancer Template",
+	"Parameters": {
+		"LoadBalancerName": {
+			"Type": "String",
+			"Default": "alb10"
+		},
+		"Environment": {
+			"Type": "String",
+			"Default": "dev"
+		},
+		"VpcStackName": {
+			"Type": "String",
+			"Default": "estudo-vpc"
+		}
+	},
+	"Metadata": {
+		"AWS::CloudFormation::Interface": {
+			"ParameterGroups": [
+				{
+					"Label": {
+						"default": "Main Configuration"
+					},
+					"Parameters": [
+						"LoadBalancerName",
+						"Environment",
+						"VpcStackName"
+					]
+				}
+			],
+			"ParameterLabels": {
+				"LoadBalancerName": {
+					"default": "Application Load Balancer Name"
+				},
+				"Environment": {
+					"default": "Environment Type"
+				},
+				"VpcStackName": {
+					"default": "estudo-vpc"
+				}
+			}
+		}
+	},
+	"Mappings": {
+		"PrefixMap": {
+			"dev": {
+				"Prefix": "dev"
+			}
+		}
+	},
+	"Resources": {
+		"SecurityGroup": {
+			"Type": "AWS::EC2::SecurityGroup",
+			"Properties": {
+				"GroupDescription": "Access to the public application load balancer (HTTP)",
+				"GroupName": {
+					"Fn::Sub": [
+						"estudo-${Prefix}-${LoadBalancerName}-security-group",
+						{
+							"Prefix": {
+								"Fn::FindInMap": [
+									"PrefixMap",
+									{
+										"Ref": "Environment"
+									},
+									"Prefix"
+								]
+							}
+						}
+					]
+				},
+				"SecurityGroupIngress": [
+					{
+						"CidrIp": "0.0.0.0/0",
+						"FromPort": 80,
+						"ToPort": 80,
+						"IpProtocol": "tcp",
+						"Description": "HTTP Traffic"
+					}
+				],
+				"VpcId": {
+					"Fn::ImportValue": {
+						"Fn::Sub": "${VpcStackName}-VpcId"
+					}
+				},
+				"Tags": [
+					{
+						"Key": "Name",
+						"Value": {
+							"Fn::Sub": [
+								"estudo-${Prefix}-${LoadBalancerName}-security-group",
+								{
+									"Prefix": {
+										"Fn::FindInMap": [
+											"PrefixMap",
+											{
+												"Ref": "Environment"
+											},
+											"Prefix"
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						"Key": "Environment",
+						"Value": {
+							"Ref": "Environment"
+						}
+					}
+				]
+			}
+		},
+		"ApplicationLoadBalancer": {
+			"Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+			"Properties": {
+				"Name": {
+					"Fn::Sub": [
+						"estudo-${Prefix}-${LoadBalancerName}",
+						{
+							"Prefix": {
+								"Fn::FindInMap": [
+									"PrefixMap",
+									{
+										"Ref": "Environment"
+									},
+									"Prefix"
+								]
+							}
+						}
+					]
+				},
+				"Scheme": "internet-facing",
+				"IpAddressType": "ipv4",
+				"SecurityGroups": [
+					{
+						"Ref": "SecurityGroup"
+					}
+				],
+				"Subnets": [
+					{
+						"Fn::ImportValue": {
+							"Fn::Sub": "${VpcStackName}-PublicSubnet1"
+						}
+					},
+					{
+						"Fn::ImportValue": {
+							"Fn::Sub": "${VpcStackName}-PublicSubnet2"
+						}
+					}
+				],
+				"Type": "application",
+				"Tags": [
+					{
+						"Key": "Name",
+						"Value": {
+							"Fn::Sub": [
+								"estudo-${Prefix}-${LoadBalancerName}",
+								{
+									"Prefix": {
+										"Fn::FindInMap": [
+											"PrefixMap",
+											{
+												"Ref": "Environment"
+											},
+											"Prefix"
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						"Key": "Environment",
+						"Value": {
+							"Ref": "Environment"
+						}
+					}
+				]
+			}
+		},
+		"HTTPlistener": {
+			"Type": "AWS::ElasticLoadBalancingV2::Listener",
+			"DependsOn": [
+				"ApplicationLoadBalancer"
+			],
+			"Properties": {
+				"LoadBalancerArn": {
+					"Ref": "ApplicationLoadBalancer"
+				},
+				"Port": 80,
+				"Protocol": "HTTP",
+				"DefaultActions": [
+					{
+						"Type": "fixed-response",
+						"FixedResponseConfig": {
+							"StatusCode": "404",
+							"ContentType": "text/plain",
+							"MessageBody": "Not found"
+						}
+					}
+				]
+			}
+		}
+	},
+	"Outputs": {
+		"DNSName": {
+			"Description": "The DNS name for the load balancer.",
+			"Value": {
+				"Fn::GetAtt": [
+					"ApplicationLoadBalancer",
+					"DNSName"
+				]
+			},
+			"Export": {
+				"Name": {
+					"Fn::Sub": "${AWS::StackName}-DNSName"
+				}
+			}
+		},
+		"HostedZoneID": {
+			"Description": "The ID of the Amazon Route 53 hosted zone associated with the load balancer.",
+			"Value": {
+				"Fn::GetAtt": [
+					"ApplicationLoadBalancer",
+					"CanonicalHostedZoneID"
+				]
+			},
+			"Export": {
+				"Name": {
+					"Fn::Sub": "${AWS::StackName}-HostedZoneID"
+				}
+			}
+		},
+		"ListenerArn": {
+			"Description": "The Amazon Resource Name (ARN) of the listener.",
+			"Value": {
+				"Ref": "HTTPlistener"
+			},
+			"Export": {
+				"Name": {
+					"Fn::Sub": "${AWS::StackName}-ListenerArn"
+				}
+			}
+		}
+	}
 }
