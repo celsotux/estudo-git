@@ -24,7 +24,7 @@ Parameters:
     Default: 10.0.4.0/24
 
 Resources:
-  MyVPC:
+  VPC:
     Type: AWS::EC2::VPC
     Properties:
       CidrBlock: !Ref VpcCIDR
@@ -33,69 +33,85 @@ Resources:
       Tags:
         - Key: Name
           Value: estudo-dev-vpc
+        - Key: Environment
+          Value: dev
+        - Key: Domain
+          Value: estudo
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
-        - Key: Name
-          Value: estudo-dev-igw
+        - Key: Environment
+          Value: dev
+        - Key: Domain
+          Value: estudo
 
   AttachGateway:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
-      VpcId: !Ref MyVPC
+      VpcId: !Ref VPC
       InternetGatewayId: !Ref InternetGateway
 
   PublicSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref MyVPC
+      VpcId: !Ref VPC
       CidrBlock: !Ref PublicSubnet1CIDR
       AvailabilityZone: !Select [0, !GetAZs '']
       MapPublicIpOnLaunch: true
       Tags:
-        - Key: Name
-          Value: estudo-dev-public-subnet1
+        - Key: Environment
+          Value: dev
+        - Key: Domain
+          Value: estudo
 
   PublicSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref MyVPC
+      VpcId: !Ref VPC
       CidrBlock: !Ref PublicSubnet2CIDR
       AvailabilityZone: !Select [1, !GetAZs '']
       MapPublicIpOnLaunch: true
       Tags:
-        - Key: Name
-          Value: estudo-dev-public-subnet2
+        - Key: Environment
+          Value: dev
+        - Key: Domain
+          Value: estudo
 
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref MyVPC
+      VpcId: !Ref VPC
       CidrBlock: !Ref PrivateSubnet1CIDR
       AvailabilityZone: !Select [0, !GetAZs '']
       Tags:
-        - Key: Name
-          Value: estudo-dev-private-subnet1
+        - Key: Environment
+          Value: dev
+        - Key: Domain
+          Value: estudo
 
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref MyVPC
+      VpcId: !Ref VPC
       CidrBlock: !Ref PrivateSubnet2CIDR
       AvailabilityZone: !Select [1, !GetAZs '']
       Tags:
-        - Key: Name
-          Value: estudo-dev-private-subnet2
+        - Key: Environment
+          Value: dev
+        - Key: Domain
+          Value: estudo
 
   RouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref MyVPC
+      VpcId: !Ref VPC
       Tags:
-        - Key: Name
-          Value: estudo-dev-route-table
+        - Key: Environment
+          Value: dev
+        - Key: Domain
+          Value: estudo
 
   PublicRoute:
     Type: AWS::EC2::Route
@@ -108,18 +124,22 @@ Resources:
   PrivateRouteTable1:
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref MyVPC
+      VpcId: !Ref VPC
       Tags:
-        - Key: Name
-          Value: estudo-dev-private-route-table1
+        - Key: Environment
+          Value: dev
+        - Key: Domain
+          Value: estudo
 
   PrivateRouteTable2:
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref MyVPC
+      VpcId: !Ref VPC
       Tags:
-        - Key: Name
-          Value: estudo-dev-private-route-table2
+        - Key: Environment
+          Value: dev
+        - Key: Domain
+          Value: estudo
 
   NatGatewayEIP1:
     Type: AWS::EC2::EIP
@@ -160,7 +180,7 @@ Resources:
 Outputs:
   VpcId:
     Description: ID da VPC criada
-    Value: !Ref MyVPC
+    Value: !Ref VPC
   PublicSubnet1Id:
     Description: ID da primeira subnet pública criada
     Value: !Ref PublicSubnet1
