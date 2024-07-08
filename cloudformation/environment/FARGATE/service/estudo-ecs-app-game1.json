@@ -83,7 +83,7 @@
         },
         "LoadBalancerStackName": {
             "Type": "String",
-            "Default": "estudo-alb10"
+            "Default": "estudo-alb"
         },
         "VpcStackName": {
             "Type": "String",
