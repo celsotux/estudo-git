@@ -97,9 +97,9 @@
             "Type": "String",
             "Description": "Service Discovery stack name.",
             "AllowedValues": [
-                "estudo-vpc-map"
+                "estudo-dev-map"
             ],
-            "Default": "estudo-vpc-map"
+            "Default": "estudo-dev-map"
         },
         "DnsRecordType": {
             "Type": "String",
