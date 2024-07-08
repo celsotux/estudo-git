@@ -12,7 +12,7 @@
 		},
 		"VpcStackName": {
 			"Type": "String",
-			"Default": "dev-vpc"
+			"Default": "estudo-vpc"
 		}
 	},
 	"Metadata": {
