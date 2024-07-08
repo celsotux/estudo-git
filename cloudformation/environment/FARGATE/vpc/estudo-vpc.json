@@ -8,7 +8,7 @@
 		},
 		"CidrBlock": {
 			"Type": "String",
-			"Default": "10.5.0.0/16"
+			"Default": "10.1.0.0/16"
 		}
 	},
 	"Metadata": {
@@ -47,11 +47,11 @@
 		"DomainMap": {
 			"dev": {
 				"Prefix": "dev",
-				"AccountId": "791918029132"
+				"AccountId": "839930326968"
 			}
 		},
 		"AccountMap": {
-			"791918029132": {
+			"839930326968": {
 				"Prefix": "dev",
 				"Name": "estudo"
 			}
