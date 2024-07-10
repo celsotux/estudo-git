@@ -21,8 +21,8 @@ jobs:
       - name: Deploy Stack
         run: |
           aws cloudformation create-stack \
-            --stack-name estudo-alb50 \
+            --stack-name estudo-alb10 \
             --template-body file://./cloudformation/environment/FARGATE/alb/estudo-alb10.json \
             --capabilities CAPABILITY_IAM
 
-          aws cloudformation wait stack-create-complete --stack-name estudo-alb50
+          aws cloudformation wait stack-create-complete --stack-name estudo-alb10
