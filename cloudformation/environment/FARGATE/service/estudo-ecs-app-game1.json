@@ -400,14 +400,12 @@
                         "HealthCheck": {
                             "Command": [
                                 "CMD-SHELL",
-                                {
-                                    "Fn::Sub": "curl -f http://localhost:${ContainerPort}${HealthCheckPath} || exit 1"
-                                }
+                                ""
                             ],
-                            "Interval": 60,
-                            "Retries": 3,
-                            "StartPeriod": 120,
-                            "Timeout": 30
+                            "Interval": 0,
+                            "Retries": 0,
+                            "StartPeriod": 0,
+                            "Timeout": 0
                         },
                         "Essential": "true",
                         "LogConfiguration": {
