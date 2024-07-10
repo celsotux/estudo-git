@@ -22,7 +22,7 @@ jobs:
         run: |
           aws cloudformation create-stack \
             --stack-name estudo-ecs-app-game1 \
-            --template-body file://./cloudformation/environment/FARGATE/ecs/estudo-ecs-app-game1.json \
+            --template-body file://./cloudformation/environment/FARGATE/service/estudo-ecs-app-game1.json \
             --capabilities CAPABILITY_NAMED_IAM
 
           aws cloudformation wait stack-create-complete --stack-name estudo-ecs-app-game1
