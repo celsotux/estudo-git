@@ -21,8 +21,8 @@ jobs:
       - name: Deploy Stack
         run: |
           aws cloudformation create-stack \
-            --stack-name estudo-ecs-cluster2 \
+            --stack-name estudo-ecs-cluster1 \
             --template-body file://./cloudformation/environment/FARGATE/cluster/estudo-ecs-cluster1.json \
             --capabilities CAPABILITY_IAM
 
-          aws cloudformation wait stack-create-complete --stack-name estudo-ecs-cluster2
+          aws cloudformation wait stack-create-complete --stack-name estudo-ecs-cluster1
