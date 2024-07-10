@@ -1,4 +1,4 @@
-name: 5-Deploy Cluster2 ECS Infra
+name: 5-Deploy Cluster1 ECS Infra
 
 on:
   workflow_dispatch:
@@ -22,7 +22,7 @@ jobs:
         run: |
           aws cloudformation create-stack \
             --stack-name estudo-ecs-cluster2 \
-            --template-body file://./cloudformation/environment/FARGATE/cluster/estudo-ecs-cluster2.json \
+            --template-body file://./cloudformation/environment/FARGATE/cluster/estudo-ecs-cluster1.json \
             --capabilities CAPABILITY_IAM
 
           aws cloudformation wait stack-create-complete --stack-name estudo-ecs-cluster2
