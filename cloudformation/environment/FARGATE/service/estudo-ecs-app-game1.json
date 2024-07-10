@@ -397,7 +397,18 @@
                                 "Memory"
                             ]
                         },
-                        
+                        "HealthCheck": {
+                            "Command": [
+                                "CMD-SHELL",
+                                {
+                                    "Fn::Sub": "curl -f http://localhost:${ContainerPort}${HealthCheckPath} || exit 1"
+                                }
+                            ],
+                            "Interval": 60,
+                            "Retries": 3,
+                            "StartPeriod": 120,
+                            "Timeout": 30
+                        },
                         "Essential": "true",
                         "LogConfiguration": {
                             "LogDriver": "awslogs",
@@ -555,7 +566,7 @@
                         "CidrIP":"10.5.0.0/16"
                     }
                 ],
-
+  
                 "VpcId": {
                     "Fn::ImportValue": {
                         "Fn::Sub": "${VpcStackName}-VpcId"
@@ -1010,4 +1021,5 @@
             }
         }
     }
-}
+  }
+  
