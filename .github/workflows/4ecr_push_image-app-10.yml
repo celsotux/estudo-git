@@ -12,7 +12,7 @@ jobs:
       REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-      IMAGE_NAME: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.REPOSITORY_NAME }}:hit-game-app50
+      IMAGE_NAME: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.REPOSITORY_NAME }}:hit-game-app10
 
     steps:
       - name: Checkout
@@ -31,11 +31,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t hit-game-app50 ./app
+          docker build -t hit-game-app10 ./app
 
       - name: Tag Docker image
         run: |
-          docker tag hit-game-app50:latest $IMAGE_NAME
+          docker tag hit-game-app10:latest $IMAGE_NAME
 
       - name: Push Docker image to ECR
         run: | 
