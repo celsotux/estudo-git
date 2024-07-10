@@ -31,7 +31,7 @@
         "ContainerImage": {
             "Type": "String",
             "Description": "The image used to start a container.",
-            "Default": "791918029132.dkr.ecr.us-east-1.amazonaws.com/estudo:hit-game-app"
+            "Default": "791918029132.dkr.ecr.us-east-1.amazonaws.com/estudo:hit-game-app10"
         },
         "ContainerPort": {
             "Type": "Number",
