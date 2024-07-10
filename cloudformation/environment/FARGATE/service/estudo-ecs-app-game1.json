@@ -397,16 +397,7 @@
                                 "Memory"
                             ]
                         },
-                        "HealthCheck": {
-                            "Command": [
-                                "CMD-SHELL",
-                                ""
-                            ],
-                            "Interval": 0,
-                            "Retries": 0,
-                            "StartPeriod": 0,
-                            "Timeout": 0
-                        },
+                        
                         "Essential": "true",
                         "LogConfiguration": {
                             "LogDriver": "awslogs",
