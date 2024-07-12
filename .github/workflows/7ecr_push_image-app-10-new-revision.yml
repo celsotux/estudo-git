@@ -1,4 +1,4 @@
-name: 7-Deploy IMAGE app10 to ECR New Revision
+name: 4-Deploy IMAGE app10 to ECR infra
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ jobs:
       REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-      IMAGE_VERSION: $(date +'%Y-%m-%d-%H-%M-%S')  # Define a versão da imagem com a data atual
+      IMAGE_VERSION: ${{ github.run_number }}-$(date +"%Y%m%d%H%M%S")  # Define a versão da imagem com um número único e a data/hora atual
       IMAGE_NAME: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.REPOSITORY_NAME }}:${IMAGE_VERSION}
 
     steps:
