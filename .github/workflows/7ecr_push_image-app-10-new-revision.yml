@@ -12,7 +12,8 @@ jobs:
       REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-      IMAGE_VERSION: ${{ secrets.VERSION_DATE }}  # Define a versão da imagem com a data atual
+      VERSION_DATE: ${{ secrets.VERSION_DATE }}  # Variável de data configurada nos segredos
+      IMAGE_VERSION: ${{ VERSION_DATE }}  # Utiliza a variável de data como versão da imagem
       IMAGE_NAME: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${REPOSITORY_NAME}:${IMAGE_VERSION}
 
     steps:
