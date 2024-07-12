@@ -12,7 +12,7 @@ jobs:
       REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-      IMAGE_VERSION: ${{ github.run_number }}-$(date +"%Y%m%d%H%M%S")  # Define a versão da imagem com um número único e a data/hora atual
+      IMAGE_VERSION: ${{ github.run_number }}-${{ github.sha }}  # Utiliza o número de execução do GitHub e o SHA do commit como versão
       IMAGE_NAME: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.REPOSITORY_NAME }}:${IMAGE_VERSION}
 
     steps:
@@ -57,4 +57,4 @@ jobs:
       - name: Set outputs
         run: |
           echo "REPOSITORY_NAME=${REPOSITORY_NAME}" >> $GITHUB_OUTPUT
-          echo "AWS_REGION=${AWS_REGION}" >> $GITHUB_OUTPUT
+          echo "AWS_REGION=${AWS_REGION}" >> $GITHUB
