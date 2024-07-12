@@ -1,4 +1,4 @@
-name: 7-Deploy IMAGE app10 to ECR infra and new revision to ecs
+name: 7-Deploy IMAGE app10 to ECR infra and new revision ecs
 
 on:
   workflow_dispatch:
@@ -13,7 +13,6 @@ jobs:
       AWS_REGION: ${{ secrets.AWS_REGION }}
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
       IMAGE_NAME: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.REPOSITORY_NAME }}:hit-game-app10
-      TASK_DEFINITION_FAMILY: ${{ secrets.TASK_DEFINITION_FAMILY }}
 
     steps:
       - name: Checkout
@@ -42,11 +41,17 @@ jobs:
         run: | 
           docker push $IMAGE_NAME
 
+      - name: Install jq
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
       - name: Register new task definition
         run: |
-          TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition $TASK_DEFINITION_FAMILY)
+          TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition estudo-dev-app-game10)
           NEW_TASK_DEFINITION=$(echo $TASK_DEFINITION | jq --arg IMAGE_NAME "$IMAGE_NAME" '.taskDefinition | .containerDefinitions[0].image=$IMAGE_NAME | del(.status,.revision,.taskDefinitionArn,.requiresAttributes,.compatibilities,.registeredAt,.registeredBy)')
-          aws ecs register-task-definition --cli-input-json "$NEW_TASK_DEFINITION"
+          echo "$NEW_TASK_DEFINITION" > new-task-def.json
+          aws ecs register-task-definition --cli-input-json file://new-task-def.json
 
       - name: Set outputs
         run: |
