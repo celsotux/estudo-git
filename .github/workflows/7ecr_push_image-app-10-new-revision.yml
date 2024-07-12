@@ -1,4 +1,4 @@
-name: 4-Deploy IMAGE app10 to ECR infra
+name: 7-Deploy IMAGE app10 to ECR infra and new revision to ecs
 
 on:
   workflow_dispatch:
