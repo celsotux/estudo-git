@@ -1,4 +1,4 @@
-name: 4-Deploy IMAGE app10 to ECR New Revision
+name: 7-Deploy IMAGE app10 to ECR New Revision
 
 on:
   workflow_dispatch:
