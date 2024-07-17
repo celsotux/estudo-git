@@ -41,6 +41,23 @@
             "application/json": "Empty"
           }
         }
+      },
+  
+      "MyApiStage": {
+        "Type": "AWS::ApiGateway::Stage",
+        "Properties": {
+          "RestApiId": { "Ref": "MyApiGateway" },
+          "DeploymentId": { "Ref": "MyApiDeployment" },
+          "StageName": "Prod"
+        }
+      },
+  
+      "MyApiDeployment": {
+        "Type": "AWS::ApiGateway::Deployment",
+        "DependsOn": "MyApiMethod",
+        "Properties": {
+          "RestApiId": { "Ref": "MyApiGateway" }
+        }
       }
     }
   }
