@@ -45,18 +45,6 @@
         }
       },
   
-      "MyLambdaPermission": {
-        "Type": "AWS::Lambda::Permission",
-        "Properties": {
-          "FunctionName": { "Fn::GetAtt": ["MyLambdaFunction", "Arn"] },
-          "Action": "lambda:InvokeFunction",
-          "Principal": "apigateway.amazonaws.com",
-          "SourceArn": {
-            "Fn::Sub": "arn:aws:execute-api:us-east-1:791918029132:${MyApiGateway}/*/POST/update-service"
-          }
-        }
-      },
-  
       "MyLambdaFunction": {
         "Type": "AWS::Lambda::Function",
         "Properties": {
@@ -102,6 +90,18 @@
               }
             }
           ]
+        }
+      },
+  
+      "MyLambdaPermission": {
+        "Type": "AWS::Lambda::Permission",
+        "Properties": {
+          "FunctionName": { "Fn::GetAtt": ["MyLambdaFunction", "Arn"] },
+          "Action": "lambda:InvokeFunction",
+          "Principal": "apigateway.amazonaws.com",
+          "SourceArn": {
+            "Fn::Sub": "arn:aws:execute-api:us-east-1:791918029132:${MyApiGateway}/*/POST/update-service"
+          }
         }
       }
     }
