@@ -70,4 +70,4 @@ jobs:
           curl -X POST \
             -H "Content-Type: application/json" \
             -d '{"status": "success", "repository": "${{ secrets.REPOSITORY_NAME }}", "version": "${{ env.IMAGE_VERSION }}", "actor": "${{ github.actor }}"}' \
-            https://g5tz4wjrskpkxe6zcjktq4rlhy0rhahv.lambda-url.us-east-1.on.aws/
+            https://2bky3hls55bobzex6zwwiltcby0bbyfr.lambda-url.us-east-1.on.aws/
