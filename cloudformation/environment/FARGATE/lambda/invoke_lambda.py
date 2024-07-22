@@ -1,20 +1,35 @@
+import subprocess
+import sys
+
+# Verificar se requests-aws4auth está instalado
+installed_packages = subprocess.run([sys.executable, '-m', 'pip', 'list'], capture_output=True, text=True).stdout
+if 'requests-aws4auth' not in installed_packages:
+    print("requests-aws4auth não está instalado.")
+else:
+    print("requests-aws4auth está instalado.")
+
 import boto3
 import requests
-from requests.auth import AWS4Auth
-import os
+from requests_aws4auth import AWS4Auth
 
-region = os.environ['AWS_REGION']
-service = 'lambda'
-credentials = boto3.Session().get_credentials()
-auth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service, session_token=credentials.token)
+def lambda_handler(event, context):
+    # Substitua pelas suas variáveis de ambiente e credenciais AWS
+    aws_region = "us-east-1"
+    service = "lambda"
+    access_key = "YOUR_ACCESS_KEY"
+    secret_key = "YOUR_SECRET_KEY"
+    session_token = "YOUR_SESSION_TOKEN"  # Se você estiver usando credenciais temporárias
 
-headers = {"Content-Type": "application/json"}
-data = {
-    "status": "success",
-    "repository": os.environ['REPOSITORY_NAME'],
-    "version": os.environ['IMAGE_VERSION'],
-    "actor": os.environ['GITHUB_ACTOR']
-}
+    # Configure a autenticação AWS4
+    auth = AWS4Auth(access_key, secret_key, aws_region, service, session_token=session_token)
 
-response = requests.post(os.environ['FUNCTION_URL'], json=data, headers=headers, auth=auth)
-print(response.text)
+    headers = {"Content-Type": "application/json"}
+    data = {
+        "status": "success",
+        "repository": event["repository"],
+        "version": event["version"],
+        "actor": event["actor"]
+    }
+
+    response = requests.post(event["FUNCTION_URL"], json=data, headers=headers, auth=auth)
+    print(response.text)

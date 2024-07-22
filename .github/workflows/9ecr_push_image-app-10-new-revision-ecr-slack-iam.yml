@@ -1,4 +1,4 @@
-name: 9-Deploy IMAGE app10 to ECR New Revision ECR SLACK IAM
+name: 8-Deploy IMAGE app10 to ECR New Revision ECR SLACK
 
 on:
   workflow_dispatch:
