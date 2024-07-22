@@ -78,4 +78,4 @@ jobs:
           IMAGE_VERSION: ${{ env.IMAGE_VERSION }}
           GITHUB_ACTOR: ${{ github.actor }}
         run: |
-          python3 ./invoke_lambda.py
+          python3 ./cloudformation/environment/FARGATE/lambda/invoke_lambda.py
