@@ -68,7 +68,7 @@ jobs:
       - name: Install Python and Dependencies
         run: |
           sudo apt-get install python3-pip
-          pip3 install boto3 requests
+          pip3 install boto3 requests requests-aws4auth
 
       - name: Invoke Lambda Function
         env:
