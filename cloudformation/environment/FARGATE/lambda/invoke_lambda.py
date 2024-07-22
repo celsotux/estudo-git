@@ -1,28 +1,17 @@
-import subprocess
-import sys
-
-# Verificar se requests-aws4auth está instalado
-installed_packages = subprocess.run([sys.executable, '-m', 'pip', 'list'], capture_output=True, text=True).stdout
-if 'requests-aws4auth' not in installed_packages:
-    print("requests-aws4auth não está instalado.")
-else:
-    print("requests-aws4auth está instalado.")
-
 import boto3
 import requests
 from requests_aws4auth import AWS4Auth
 
-def lambda_handler(event, context):
-    # Substitua pelas suas variáveis de ambiente e credenciais AWS
-    aws_region = "us-east-1"
-    service = "lambda"
-    access_key = "YOUR_ACCESS_KEY"
-    secret_key = "YOUR_SECRET_KEY"
-    session_token = "YOUR_SESSION_TOKEN"  # Se você estiver usando credenciais temporárias
+# Configurar as credenciais e a região AWS
+session = boto3.Session()
+credentials = session.get_credentials().get_frozen_credentials()
+aws_region = "us-east-1"
+service = "lambda"
 
-    # Configure a autenticação AWS4
-    auth = AWS4Auth(access_key, secret_key, aws_region, service, session_token=session_token)
+# Configurar a autenticação AWS4
+auth = AWS4Auth(credentials.access_key, credentials.secret_key, aws_region, service, session_token=credentials.token)
 
+def lambda_handler(event):
     headers = {"Content-Type": "application/json"}
     data = {
         "status": "success",
@@ -33,3 +22,13 @@ def lambda_handler(event, context):
 
     response = requests.post(event["FUNCTION_URL"], json=data, headers=headers, auth=auth)
     print(response.text)
+
+if __name__ == "__main__":
+    # Exemplo de evento para testar localmente
+    event = {
+        "repository": "example-repo",
+        "version": "11",
+        "actor": "example-actor",
+        "FUNCTION_URL": "https://gzisbtogip5cf2iykukx2lldxq0sqrwv.lambda-url.us-east-1.on.aws/"
+    }
+    lambda_handler(event)
