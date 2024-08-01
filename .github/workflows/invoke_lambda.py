@@ -29,6 +29,6 @@ if __name__ == "__main__":
         "repository": "example-repo",
         "version": "11",
         "actor": "example-actor",
-        "FUNCTION_URL": "https://6fray2qnjbnte5jruhxff5ijoi0huqmm.lambda-url.us-east-1.on.aws/"
+        "FUNCTION_URL": "https://zj2lu6jyxllerhd6ik6zrh4nyq0olfsf.lambda-url.us-east-1.on.aws/"
     }
     lambda_handler(event)
