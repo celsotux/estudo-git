@@ -35,7 +35,9 @@ jobs:
 
       - name: Generate IMAGE_VERSION with datetime
         id: image_version
-        run: echo "IMAGE_VERSION=${IMAGE_BASE_NAME}-$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
+        run: |
+          IMAGE_VERSION="${IMAGE_BASE_NAME}-$(TZ=America/Sao_Paulo date +'%d-%m-%Y-%H-%M-%S')"
+          echo "IMAGE_VERSION=${IMAGE_VERSION}" >> $GITHUB_ENV
 
       - name: Set IMAGE_NAME environment variable
         run: echo "IMAGE_NAME=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY_NAME}:${IMAGE_VERSION}" >> $GITHUB_ENV
