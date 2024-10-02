@@ -79,7 +79,7 @@
         "HostName": {
             "Type": "String",
             "Description": "One host names",
-            "Default": "app-game10.estudocloud.io"
+            "Default": "game10.estudocloud.io"
         },
         "LoadBalancerStackName": {
             "Type": "String",
