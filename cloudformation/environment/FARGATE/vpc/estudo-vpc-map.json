@@ -45,15 +45,15 @@
           }
       },
       "DomainMap": {
-          "estudo": {
-              "Prefix": "estudo",
+          "dev": {
+              "Prefix": "dev",
               "AccountId": "791918029132"
           }
       },
       "AccountMap": {
           "791918029132": {
-              "Prefix": "estudo",
-              "Name": "dev"
+              "Prefix": "dev",
+              "Name": "estudo"
           }
       }
   },
