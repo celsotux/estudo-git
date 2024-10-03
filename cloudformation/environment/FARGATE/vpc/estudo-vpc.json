@@ -47,11 +47,11 @@
 		"DomainMap": {
 			"dev": {
 				"Prefix": "dev",
-				"AccountId": "791918029132"
+				"AccountId": "id-conta-aws"
 			}
 		},
 		"AccountMap": {
-			"791918029132": {
+			"id-conta-aws": {
 				"Prefix": "dev",
 				"Name": "estudo"
 			}
