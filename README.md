@@ -21,5 +21,3 @@ Ao longo deste projeto, consegui reduzir significativamente o tempo de deploy e 
 - **Segurança e resiliência** com automação de deploy em ambiente de produção, seguindo as melhores práticas do mercado.
 
 ---
-
-Se sua empresa valoriza inovação, otimização e segurança em suas operações de TI, estou pronto para agregar com o meu conhecimento prático e comprovado. Vamos conversar e explorar como posso contribuir para os seus próximos desafios.
