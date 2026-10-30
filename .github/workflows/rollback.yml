@@ -14,6 +14,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+      # Remove os stacks na ordem inversa do deploy, pois os stacks
+      # posteriores importam exports (Fn::ImportValue) dos anteriores
       - name: Rollback Infra via CloudFormation
         run: |
-          aws cloudformation delete-stack --stack-name estudo-vpc
+          for stack in estudo-ecs-app-game1 estudo-ecs-cluster1 estudo-alb10 estudo-vpc-map estudo-vpc; do
+            if aws cloudformation describe-stacks --stack-name "$stack" > /dev/null 2>&1; then
+              echo "Removendo stack $stack..."
+              aws cloudformation delete-stack --stack-name "$stack"
+              aws cloudformation wait stack-delete-complete --stack-name "$stack"
+            else
+              echo "Stack $stack não existe, pulando."
+            fi
+          done
