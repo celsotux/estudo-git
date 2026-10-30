@@ -18,11 +18,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1 
 
-      - name: Deploy Stack
+      - name: Deploy Stack (cria ou atualiza)
         run: |
-          aws cloudformation create-stack \
+          aws cloudformation deploy \
             --stack-name estudo-ecs-app-game1 \
-            --template-body file://./cloudformation/environment/FARGATE/service/estudo-ecs-app-game1.json \
-            --capabilities CAPABILITY_NAMED_IAM
-
-          aws cloudformation wait stack-create-complete --stack-name estudo-ecs-app-game1
+            --template-file ./cloudformation/environment/FARGATE/service/estudo-ecs-app-game1.json \
+            --capabilities CAPABILITY_NAMED_IAM \
+            --no-fail-on-empty-changeset

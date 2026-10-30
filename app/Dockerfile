@@ -8,7 +8,7 @@ RUN apk update && \
 # Alterando hostname
 ENV HOSTNAME=hit-game-app
 RUN echo "Hostname atual: $(hostname)" && \
-    echo "HOSTNAME" > /etc/hostname && \
+    echo "$HOSTNAME" > /etc/hostname && \
     echo "Novo hostname definido: $(cat /etc/hostname)"
 
 # Expor a porta 80
@@ -23,9 +23,10 @@ COPY app.js index.html style.css package.json ./
 # Copiar arquivos de imagem
 WORKDIR /var/www/localhost/htdocs/img
 COPY img/bg.png img/code.png img/ia.png img/Ruido.png ./
+COPY ["img/JS Game.html", "./"]
 
 # Copiar arquivos do jogo JS
-WORKDIR /var/www/localhost/htdocs/img/JSGame_files
+WORKDIR /var/www/localhost/htdocs/img/JS_Game_files
 COPY img/JS_Game_files/app.js img/JS_Game_files/style.css ./
 
 # Voltar ao diretório raiz do aplicativo
